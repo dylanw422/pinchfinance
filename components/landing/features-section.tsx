@@ -70,7 +70,7 @@ export default function FeaturesSection() {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-8 mt-8">
+      <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 md:gap-8 mt-8">
         {features.map((feature) => {
           return (
             <div key={feature.title} className="border-b p-4 border-gray-400/10">
