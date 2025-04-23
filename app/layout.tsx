@@ -13,6 +13,21 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Pinch",
   description: "A new way to manage personal finances.",
+  openGraph: {
+    type: "website",
+    title: "Pinch",
+    description: "A new way to manage personal finances.",
+    url: "https://pinch-topaz.vercel.app",
+    siteName: "Pinch",
+    images: [
+      {
+        url: "https://pinch-topaz.vercel.app/pinchLogoColor.webp",
+        width: 500,
+        height: 500,
+        alt: "Pinch",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
