@@ -60,10 +60,10 @@ export default function HeroSection() {
         Track spending, set goals, and get AI-powered insights
         <br className="hidden md:block" /> into your spending.
       </p>
-      <div className="flex w-full justify-center gap-4">
+      <div className="flex flex-col sm:flex-row w-full justify-center gap-4">
         <Input
           onChange={(e) => setEmail(e.target.value)}
-          className="w-1/4 bg-primary/10 backdrop-blur-md translate-y-[-1rem] animate-fade-in opacity-0 ease-in-out [--animation-delay:600ms]"
+          className="w-full sm:w-1/4 bg-primary/10 backdrop-blur-md translate-y-[-1rem] animate-fade-in opacity-0 ease-in-out [--animation-delay:600ms]"
           placeholder="Email address..."
           value={email}
         />
