@@ -1,4 +1,3 @@
-import { Query } from "@neondatabase/serverless";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
