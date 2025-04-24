@@ -75,7 +75,6 @@ export function SiteFooter() {
             <Link href="/" className="flex items-center">
               <img src="/pinchLogoColor.webp" alt="" className="h-8 mr-2 rounded-md" />
               <img src="/pinchFullWhite.webp" alt="" className="h-8" />
-              <h1 className="text-3xl pb-1">Finance</h1>
             </Link>
             <p className="max-w-xs">Turn habits into wealth.</p>
           </div>

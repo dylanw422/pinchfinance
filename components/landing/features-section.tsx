@@ -15,7 +15,7 @@ const features = [
   {
     icon: <Search className="w-4 h-4" />,
     title: "Insights",
-    text: "Get real-time insights on your spending, income, and savings – all powered by Pinch's intelligent analysis.",
+    text: "Get real-time insights on your spending, income, and savings — all powered by Pinch's intelligent analysis.",
   },
   {
     icon: <Target className="w-4 h-4" />,
@@ -64,9 +64,9 @@ export default function FeaturesSection() {
     <div id="features" className="relative mx-auto max-w-[80rem] px-6 text-center md:px-8">
       <div className="flex flex-col items-center justify-center space-y-2">
         <PiggyBank />
-        <h1 className="text-lg">Everything you need – all in one app.</h1>
+        <h1 className="text-lg">Everything you need, all in one app.</h1>
         <p className="text-gray-400">
-          From budgeting to big goals – take control of your money without switching apps.
+          From budgeting to big goals — take control of your money without switching apps.
         </p>
       </div>
 

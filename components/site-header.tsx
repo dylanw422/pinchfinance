@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlignJustify, XIcon } from "lucide-react";
@@ -98,9 +98,14 @@ export function SiteHeader() {
   return (
     <>
       <header className="fixed left-0 top-0 z-50 w-full translate-y-[-1rem] animate-fade-in border-b opacity-0 backdrop-blur-[12px] [--animation-delay:600ms]">
-        <div className="container flex h-[3.5rem] items-center justify-center">
+        <div className="container flex h-[3.5rem] items-center justify-between">
           <Link className="text-md flex items-center" href="/">
             <img src="/pinchFullWhite.webp" alt="" className="h-5" />
+          </Link>
+          <Link href="/dashboard">
+            <Button className="h-8 border-b-4 border-black/20 active:border-b-0 transition-all">
+              Open App
+            </Button>
           </Link>
           {/* 
           <div className="ml-auto flex h-full items-center">
