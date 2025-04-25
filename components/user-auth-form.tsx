@@ -72,6 +72,13 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
           password: data.password,
         },
         {
+          onError: (ctx) => {
+            if (ctx.error.code === "USER_ALREADY_EXISTS") {
+              toast.warning("An account with this email already exists", {
+                position: "bottom-left",
+              });
+            }
+          },
           onSuccess: () => {
             router.push("/dashboard");
           },
