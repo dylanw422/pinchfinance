@@ -6,13 +6,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Sign Up | Magic UI",
-  description: "Sign Up for Magic UI",
+  title: "Sign Up | Pinch",
+  description: "Sign up for a new account",
 };
 
-export default function SignUpPage() {
+export default function LoginPage() {
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="container flex h-screen w-screen flex-col items-center justify-center ">
       <Link
         href="/"
         className={cn(
@@ -28,19 +28,12 @@ export default function SignUpPage() {
       <div className="mx-auto flex w-full flex-col justify-center gap-6 sm:w-[350px]">
         <div className="flex flex-col gap-2 text-center">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome to Magic UI
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Sign up for an account
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">Welcome to Pinch</h1>
+          <p className="text-sm text-muted-foreground">Create an account</p>
         </div>
-        <UserAuthForm />
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          <Link
-            href="/signin"
-            className="hover:text-brand underline underline-offset-4"
-          >
+        <UserAuthForm signUp />
+        <p className="px-8 text-center text-sm text-foreground">
+          <Link href="/signin" className="hover:text-brand underline underline-offset-4">
             Already have an account? Sign In
           </Link>
         </p>
