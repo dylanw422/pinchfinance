@@ -63,7 +63,7 @@ export const plaidItem = pgTable("plaid_item", {
   accessToken: text("access_token").notNull(),
   institutionId: text("institution_id").notNull(),
   institutionName: text("institution_name").notNull(),
-  itemId: text("item_id").notNull(),
+  itemId: text("item_id").notNull().unique(),
   lastUpdatedAt: timestamp("last_updated_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -126,6 +126,18 @@ export const plaidTransaction = pgTable("plaid_transaction", {
   personalFinanceConfidenceLevel: text("personal_finance_confidence_level"),
   personalFinanceCategoryIconUrl: text("personal_finance_category_icon_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const plaidCursor = pgTable("plaid_cursor", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  itemId: text("item_id")
+    .notNull()
+    .references(() => plaidItem.itemId, { onDelete: "cascade" }),
+  cursor: text("cursor"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 

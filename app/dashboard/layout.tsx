@@ -5,6 +5,7 @@ import Header from "@/components/dashboard/header";
 import Profile from "@/components/profile";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useSession, useUser } from "@/queries/auth";
+import { useUpdateData } from "@/queries/update-data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { redirect } from "next/navigation";
@@ -13,6 +14,7 @@ import { useEffect } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
+  const updateData = useUpdateData(queryClient);
   const { data: session, isLoading } = useSession();
   const { data: user } = useUser();
   const hasUpdated = useRef(false);
@@ -20,17 +22,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!session && !isLoading) {
     redirect("/signin");
   }
-
-  const updateUserData = useMutation({
-    mutationFn: async (userId: string) => {
-      await axios.post("/api/update", {
-        userId,
-      });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-    },
-  });
 
   useEffect(() => {
     const asOfRaw = user?.data.plaidBalances[0]?.asOf;
@@ -40,7 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     if (!asOfRaw) {
       hasUpdated.current = true;
-      updateUserData.mutate(userId);
+      updateData.mutate(userId);
       return;
     }
 
@@ -52,9 +43,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     if (asOfDate < today) {
       hasUpdated.current = true;
-      updateUserData.mutate(userId);
+      updateData.mutate(userId);
     }
-  }, [user, session, updateUserData]);
+  }, [user, session, updateData]);
 
   return (
     <SidebarProvider>
@@ -62,7 +53,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <SidebarTrigger className="sticky top-0" />
       <div className="flex flex-col container">
         <Header user={user} />
-        {user?.data.length == 0 ? <ConnectBank /> : children}
+        {user?.data.plaidAccounts.length == 0 ? <ConnectBank /> : children}
         <Profile />
       </div>
     </SidebarProvider>

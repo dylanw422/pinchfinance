@@ -24,9 +24,7 @@ export default function Header({ user }: { user: any }) {
         </SelectTrigger>
         <SelectContent className="bg-secondary text-sm">
           {user?.data.plaidAccounts
-            // .filter(
-            //   (account: any) => account.type === "depository" || account.type === "investment"
-            // )
+            .sort((a: any, b: any) => a.name.localeCompare(b.name))
             .map((account: any, index: number) => {
               return (
                 <SelectItem value={account.id} key={index}>

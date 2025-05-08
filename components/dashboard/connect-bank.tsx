@@ -2,6 +2,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/queries/auth";
+import { useUpdateData } from "@/queries/update-data";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
@@ -10,6 +11,7 @@ import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 
 export default function ConnectBank() {
   const queryClient = useQueryClient();
+  const updateData = useUpdateData(queryClient);
   const { data: session } = useSession();
   const [token, setToken] = useState<string | null>(null);
 
@@ -33,7 +35,8 @@ export default function ConnectBank() {
         public_token,
         metadata,
       });
-      console.log(res.data);
+
+      updateData.mutate(session?.data?.user.id);
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onExit: (err, metadata) => {
@@ -45,7 +48,7 @@ export default function ConnectBank() {
   const { open, ready } = usePlaidLink(config);
 
   return (
-    <div className="w-full h-[100dvh] flex flex-col items-center justify-center">
+    <div className="w-full flex-1 flex flex-col items-center justify-center">
       <div className="bg-pink-300/5 rounded-lg p-8 flex flex-col items-center gap-4">
         <h1 className="text-xl text-center">Connect a bank account</h1>
         <Button
