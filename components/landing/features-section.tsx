@@ -15,12 +15,12 @@ const features = [
   {
     icon: <Search className="w-4 h-4" />,
     title: "Insights",
-    text: "Get real-time insights on your spending, income, and savings — all powered by Pinch's intelligent analysis.",
+    text: "Get real-time insights on your spending, income, and savings – all powered by Pinch's intelligent analysis.",
   },
   {
     icon: <Target className="w-4 h-4" />,
     title: "Goals",
-    text: "Set financial goals like buying a home or paying off debt — and follow a step-by-step, AI-guided plan to get there.",
+    text: "Set financial goals like buying a home or paying off debt – and follow a step-by-step plan to get there.",
   },
   {
     icon: <DollarSign className="w-4 h-4" />,
@@ -30,7 +30,7 @@ const features = [
   {
     icon: <Repeat2 className="w-4 h-4" />,
     title: "Subscriptions",
-    text: "Easily view, manage, and cancel recurring expenses — no more surprises on your statements.",
+    text: "Easily view, manage, and cancel recurring expenses – no more surprises on your statements.",
   },
   {
     icon: <Layers className="w-4 h-4" />,
@@ -40,7 +40,7 @@ const features = [
   {
     icon: <Brain className="w-4 h-4" />,
     title: "AI Assistant",
-    text: "Pinch AI helps you save smarter, spend wiser, and reach goals faster — like having a money coach in your pocket.",
+    text: "Pinch AI helps you save smarter, spend wiser, and reach goals faster – like having a money coach in your pocket.",
   },
   {
     icon: <Landmark className="w-4 h-4" />,
@@ -66,7 +66,7 @@ export default function FeaturesSection() {
         <PiggyBank />
         <h1 className="text-lg">Everything you need, all in one app.</h1>
         <p className="text-gray-400">
-          From budgeting to big goals — take control of your money without switching apps.
+          Actually change your financial situation — dont just track your current one.
         </p>
       </div>
 

@@ -34,16 +34,13 @@ export default function Dashboard() {
   );
 
   // Calculate monthly income and expense
-  const monthIncome = monthTxns?.filter((txn: any) => txn.amount < 0);
-  const monthIncomeTotal = -monthIncome?.reduce(
-    (acc: number, curr: any) => acc + Number(curr.amount),
-    0
-  );
-  const monthExpense = monthTxns?.filter((txn: any) => txn.amount > 0);
-  const monthExpenseTotal = monthExpense?.reduce(
-    (acc: number, curr: any) => acc + Number(curr.amount),
-    0
-  );
+  const monthIncome = monthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
+  const monthIncomeTotal =
+    monthIncome.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
+
+  const monthExpense = monthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
+  const monthExpenseTotal =
+    monthExpense.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
 
   return (
     <div className="h-full flex flex-col overflow-auto">
