@@ -54,7 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       hasUpdated.current = true;
       updateUserData.mutate(userId);
     }
-  }, [user, session]);
+  }, [user, session, updateUserData]);
 
   return (
     <SidebarProvider>

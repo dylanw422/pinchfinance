@@ -208,5 +208,28 @@ export const insertPlaidTransaction = async (
       createdAt,
       updatedAt,
     })
+    .onConflictDoNothing()
     .returning();
+};
+
+export const getLatestTransactionForUser = async (user_id: string | undefined) => {
+  if (!user_id) return null;
+
+  const plaidAccounts = await db
+    .select({ id: plaidAccount.id })
+    .from(plaidAccount)
+    .innerJoin(plaidItem, eq(plaidAccount.plaidItemId, plaidItem.id))
+    .where(eq(plaidItem.userId, user_id));
+
+  const accountIds = plaidAccounts.map((acct) => acct.id);
+  if (accountIds.length === 0) return null;
+
+  const latestTransaction = await db
+    .select()
+    .from(plaidTransaction)
+    .where(inArray(plaidTransaction.plaidAccountId, accountIds))
+    .orderBy(desc(plaidTransaction.date))
+    .limit(1);
+
+  return latestTransaction[0] ?? null;
 };

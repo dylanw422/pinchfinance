@@ -1,4 +1,5 @@
 import {
+  getLatestTransactionForUser,
   getPlaidItems,
   getUserData,
   insertPlaidBalance,
@@ -55,10 +56,17 @@ export async function POST(req: Request) {
         );
 
         //transactions
-        const endDate = new Date().toISOString().split("T")[0];
-        const pastDate = new Date();
-        pastDate.setDate(pastDate.getDate() - 365);
-        const startDate = pastDate.toISOString().split("T")[0];
+        const now = new Date();
+        const endDate = now.toISOString().split("T")[0];
+
+        const lastTransaction = await getLatestTransactionForUser(userId);
+
+        const safeStart = lastTransaction
+          ? new Date(
+              new Date(lastTransaction.date).setDate(new Date(lastTransaction.date).getDate() - 1)
+            )
+          : new Date(now.setDate(now.getDate() - 365));
+        const startDate = safeStart.toISOString().split("T")[0];
 
         const plaidTransactions = await axios.post(`${plaidUrl}/transactions/get`, {
           access_token: item.accessToken,

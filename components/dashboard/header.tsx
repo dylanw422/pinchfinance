@@ -24,9 +24,9 @@ export default function Header({ user }: { user: any }) {
         </SelectTrigger>
         <SelectContent className="bg-secondary text-sm">
           {user?.data.plaidAccounts
-            .filter(
-              (account: any) => account.type === "depository" || account.type === "investment"
-            )
+            // .filter(
+            //   (account: any) => account.type === "depository" || account.type === "investment"
+            // )
             .map((account: any, index: number) => {
               return (
                 <SelectItem value={account.id} key={index}>
@@ -57,7 +57,7 @@ export default function Header({ user }: { user: any }) {
           {notifications.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center">Nothing to see here.</p>
           ) : (
-            notifications.map((notification) => <p></p>)
+            notifications.map((notification) => <p key={notification}>{notification}</p>)
           )}
         </DropdownMenuContent>
       </DropdownMenu>

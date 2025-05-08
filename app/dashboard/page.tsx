@@ -15,10 +15,35 @@ export default function Dashboard() {
   const { data: user } = useUser();
   const { selectedAccountId } = useSelectedAccount();
 
+  // Get the current balance for the selected account
   const accountBalance = user?.data.plaidBalances.find(
     (balance: any) => balance.plaidAccountId === selectedAccountId
   );
   const currentBalance = accountBalance?.current ?? null;
+
+  // All transactions for the selected account
+  const acctTxns = user?.data.plaidTransactions?.filter(
+    (transaction: any) => transaction.plaidAccountId === selectedAccountId
+  );
+
+  // Filter transactions by current month
+  const monthTxns = acctTxns?.filter(
+    (txn: any) =>
+      new Date(txn.date).getMonth() === new Date().getMonth() &&
+      new Date(txn.date).getFullYear() === new Date().getFullYear()
+  );
+
+  // Calculate monthly income and expense
+  const monthIncome = monthTxns?.filter((txn: any) => txn.amount < 0);
+  const monthIncomeTotal = -monthIncome?.reduce(
+    (acc: number, curr: any) => acc + Number(curr.amount),
+    0
+  );
+  const monthExpense = monthTxns?.filter((txn: any) => txn.amount > 0);
+  const monthExpenseTotal = monthExpense?.reduce(
+    (acc: number, curr: any) => acc + Number(curr.amount),
+    0
+  );
 
   return (
     <div className="h-full flex flex-col overflow-auto">
@@ -31,13 +56,19 @@ export default function Dashboard() {
           balance={currentBalance}
           className="col-span-2 md:col-span-5 xl:col-span-4 row-span-1"
         />
-        <MIncome className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1" />
-        <MExpense className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1" />
+        <MIncome
+          income={monthIncomeTotal}
+          className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1"
+        />
+        <MExpense
+          expense={monthExpenseTotal}
+          className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1"
+        />
         <AllExpense className="col-span-2 md:col-span-4 xl:col-span-3 row-span-1 md:row-span-2" />
         <Statistics className="col-span-2 md:col-span-7 xl:col-span-8 row-span-1 md:row-span-2" />
         <More className="col-span-3 row-span-1 hidden xl:block" />
       </div>
-      <Transactions />
+      <Transactions txns={acctTxns} />
     </div>
   );
 }
