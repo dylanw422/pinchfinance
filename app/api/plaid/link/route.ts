@@ -15,11 +15,11 @@ export async function POST(req: Request) {
         client_user_id: user_id,
       },
       products: ["transactions"],
-      redirect_uri: `${
-        process.env.NODE_ENV === "development"
-          ? "https://c257-67-146-252-11.ngrok-free.app/dashboard"
-          : "https://pinch-topaz.vercel.app/dashboard"
-      }`,
+      // redirect_uri: `${
+      //   process.env.NODE_ENV === "development"
+      //     ? "https://adb4-67-146-252-11.ngrok-free.app/dashboard"
+      //     : "https://pinch-topaz.vercel.app/dashboard"
+      // }`,
     });
 
     return Response.json(res.data.link_token);

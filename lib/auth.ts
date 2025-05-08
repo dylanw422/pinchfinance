@@ -15,7 +15,7 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
-  trustedOrigins: ["https://c257-67-146-252-11.ngrok-free.app"],
+  trustedOrigins: [],
   plugins: [nextCookies()],
   secret: process.env.BETTER_AUTH_SECRET,
 });

@@ -63,7 +63,7 @@ export const plaidItem = pgTable("plaid_item", {
   accessToken: text("access_token").notNull(),
   institutionId: text("institution_id").notNull(),
   institutionName: text("institution_name").notNull(),
-  itemId: text("item_id").notNull().unique(),
+  itemId: text("item_id").notNull(),
   lastUpdatedAt: timestamp("last_updated_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -134,9 +134,9 @@ export const plaidCursor = pgTable("plaid_cursor", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  itemId: text("item_id")
+  itemId: uuid("item_id")
     .notNull()
-    .references(() => plaidItem.itemId, { onDelete: "cascade" }),
+    .references(() => plaidItem.id, { onDelete: "cascade" }),
   cursor: text("cursor"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
