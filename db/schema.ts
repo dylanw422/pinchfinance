@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, boolean, timestamp, numeric, jsonb } from "drizzle-orm/pg-core";
 
 export const waitlistTable = pgTable("waitlist", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -55,10 +55,87 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at"),
 });
 
+export const plaidItem = pgTable("plaid_item", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  accessToken: text("access_token").notNull(),
+  institutionId: text("institution_id").notNull(),
+  institutionName: text("institution_name").notNull(),
+  itemId: text("item_id").notNull(),
+  lastUpdatedAt: timestamp("last_updated_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const plaidAccount = pgTable("plaid_account", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  plaidItemId: uuid("plaid_item_id")
+    .notNull()
+    .references(() => plaidItem.id, { onDelete: "cascade" }),
+  accountId: text("account_id").notNull().unique(),
+  name: text("name").notNull(),
+  mask: text("mask"),
+  type: text("type"),
+  subtype: text("subtype"),
+  officialName: text("official_name"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const plaidBalance = pgTable("plaid_balance", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  plaidAccountId: uuid("plaid_account_id")
+    .notNull()
+    .references(() => plaidAccount.id, { onDelete: "cascade" }),
+  available: numeric("available", { precision: 18, scale: 2 }),
+  current: numeric("current", { precision: 18, scale: 2 }).notNull(),
+  limit: numeric("limit", { precision: 18, scale: 2 }),
+  isoCurrencyCode: text("iso_currency_code"),
+  unofficialCurrencyCode: text("unofficial_currency_code"),
+  asOf: timestamp("as_of").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const plaidTransaction = pgTable("plaid_transaction", {
+  id: uuid("id").defaultRandom().primaryKey(), // internal ID
+  transactionId: text("transaction_id").notNull().unique(), // from Plaid
+  plaidAccountId: uuid("plaid_account_id")
+    .notNull()
+    .references(() => plaidAccount.id, { onDelete: "cascade" }),
+  accountId: text("account_id").notNull(), // Plaid's account_id again for redundancy
+  name: text("name").notNull(),
+  merchantName: text("merchant_name"),
+  merchantEntityId: text("merchant_entity_id"),
+  logoUrl: text("logo_url"),
+  website: text("website"),
+  amount: numeric("amount", { precision: 18, scale: 2 }).notNull(),
+  isoCurrencyCode: text("iso_currency_code"),
+  unofficialCurrencyCode: text("unofficial_currency_code"),
+  paymentChannel: text("payment_channel"),
+  pending: boolean("pending").notNull(),
+  pendingTransactionId: text("pending_transaction_id"),
+  authorizedDate: timestamp("authorized_date"),
+  date: timestamp("date").notNull(),
+  datetime: timestamp("datetime"),
+  authorizedDatetime: timestamp("authorized_datetime"),
+  personalFinanceCategoryPrimary: text("personal_finance_category_primary"),
+  personalFinanceCategoryDetailed: text("personal_finance_category_detailed"),
+  personalFinanceConfidenceLevel: text("personal_finance_confidence_level"),
+  personalFinanceCategoryIconUrl: text("personal_finance_category_icon_url"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const schema = {
   waitlistTable,
   user,
   session,
   account,
   verification,
+  plaidItem,
+  plaidAccount,
+  plaidBalance,
 };

@@ -60,8 +60,6 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
           },
         }
       );
-
-      console.log(signInResult);
     }
 
     if (signUp) {
@@ -84,8 +82,6 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
           },
         }
       );
-
-      console.log(signUpResult);
     }
 
     setIsLoading(false);
