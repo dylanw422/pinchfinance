@@ -15,7 +15,7 @@ export default function Balance({ balance, className }: { balance: string; class
       ease: "easeInOut",
       onUpdate: (latest) => {
         setDisplayValue(
-          `$${latest.toLocaleString(undefined, {
+          `$${latest?.toLocaleString(undefined, {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           })}`
