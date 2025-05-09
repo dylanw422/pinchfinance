@@ -24,28 +24,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   useEffect(() => {
-    const asOfRaw = user?.data.plaidBalances[0]?.asOf;
-    const userId = session?.data?.user.id;
-
-    if (!userId || hasUpdated.current) return;
-
-    if (!asOfRaw) {
+    if (!hasUpdated.current && session?.data) {
+      updateData.mutate(session.data.user.id);
       hasUpdated.current = true;
-      updateData.mutate(userId);
-      return;
     }
-
-    const asOfDate = new Date(asOfRaw);
-    const today = new Date();
-
-    asOfDate.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-
-    if (asOfDate < today) {
-      hasUpdated.current = true;
-      updateData.mutate(userId);
-    }
-  }, [user, session, updateData]);
+  }, []);
 
   return (
     <SidebarProvider>

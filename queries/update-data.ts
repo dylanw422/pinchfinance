@@ -4,7 +4,7 @@ import axios from "axios";
 export const useUpdateData = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: async (userId: string) => {
-      await axios.post("/api/update", {
+      await axios.post("/api/sync", {
         userId,
       });
     },

@@ -1,7 +1,6 @@
 import { count, eq, gte, and, inArray, desc } from "drizzle-orm";
 import { db } from "./index";
 import { plaidAccount, plaidBalance, plaidItem, plaidTransaction, waitlistTable } from "./schema";
-import { startOfToday } from "date-fns";
 
 export const addUser = async (email: string) => {
   return await db.insert(waitlistTable).values({ email }).returning();
@@ -97,21 +96,6 @@ export const getPlaidItems = async (user_id: string | undefined) => {
     })
     .from(plaidItem)
     .where(eq(plaidItem.userId, user_id));
-};
-
-export const canUpdatePlaid = async (userId: string) => {
-  const today = startOfToday();
-
-  const result = await db
-    .select()
-    .from(plaidItem)
-    .where(and(eq(plaidItem.userId, userId), gte(plaidItem.lastUpdatedAt, today)));
-
-  return result.length === 0;
-};
-
-export const updatePlaidLastUpdatedAt = async (userId: string) => {
-  await db.update(plaidItem).set({ lastUpdatedAt: new Date() }).where(eq(plaidItem.userId, userId));
 };
 
 export const insertPlaidBalance = async (
@@ -210,26 +194,4 @@ export const insertPlaidTransaction = async (
     })
     .onConflictDoNothing()
     .returning();
-};
-
-export const getLatestTransactionForUser = async (user_id: string | undefined) => {
-  if (!user_id) return null;
-
-  const plaidAccounts = await db
-    .select({ id: plaidAccount.id })
-    .from(plaidAccount)
-    .innerJoin(plaidItem, eq(plaidAccount.plaidItemId, plaidItem.id))
-    .where(eq(plaidItem.userId, user_id));
-
-  const accountIds = plaidAccounts.map((acct) => acct.id);
-  if (accountIds.length === 0) return null;
-
-  const latestTransaction = await db
-    .select()
-    .from(plaidTransaction)
-    .where(inArray(plaidTransaction.plaidAccountId, accountIds))
-    .orderBy(desc(plaidTransaction.date))
-    .limit(1);
-
-  return latestTransaction[0] ?? null;
 };
