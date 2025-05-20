@@ -1,5 +1,3 @@
-import IORedis from "ioredis";
+import { Redis } from "@upstash/redis";
 
-export const connection = new IORedis({
-  maxRetriesPerRequest: null,
-});
+export const redis = Redis.fromEnv();

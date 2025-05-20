@@ -1,6 +1,13 @@
 import { count, eq, gte, and, inArray, desc } from "drizzle-orm";
 import { db } from "./index";
-import { plaidAccount, plaidBalance, plaidItem, plaidTransaction, waitlistTable } from "./schema";
+import {
+  plaidAccount,
+  plaidBalance,
+  plaidCursor,
+  plaidItem,
+  plaidTransaction,
+  waitlistTable,
+} from "./schema";
 
 export const addUser = async (email: string) => {
   return await db.insert(waitlistTable).values({ email }).returning();
@@ -80,7 +87,7 @@ export const getUserData = async (user_id: string | undefined) => {
     .from(plaidTransaction)
     .where(inArray(plaidTransaction.plaidAccountId, accountIds))
     .orderBy(desc(plaidTransaction.date))
-    .limit(200);
+    .limit(500);
 
   return { plaidAccounts, plaidBalances, plaidTransactions };
 };
@@ -90,6 +97,7 @@ export const getPlaidItems = async (user_id: string | undefined) => {
 
   return await db
     .select({
+      id: plaidItem.id,
       itemId: plaidItem.itemId,
       institutionName: plaidItem.institutionName,
       accessToken: plaidItem.accessToken,
@@ -194,4 +202,24 @@ export const insertPlaidTransaction = async (
     })
     .onConflictDoNothing()
     .returning();
+};
+
+export const getCursorForItem = async (id: string) => {
+  const result = await db
+    .select({
+      cursor: plaidCursor.cursor,
+    })
+    .from(plaidCursor)
+    .where(eq(plaidCursor.itemId, id));
+
+  return result[0]?.cursor ?? null;
+};
+
+export const updateTransactionCursor = async (id: string, cursor: string | null) => {
+  return await db
+    .update(plaidCursor)
+    .set({
+      cursor,
+    })
+    .where(eq(plaidCursor.itemId, id));
 };

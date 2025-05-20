@@ -11,7 +11,7 @@ import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 
 export default function ConnectBank() {
   const queryClient = useQueryClient();
-  const updateData = useUpdateData(queryClient);
+  const updateData = useUpdateData();
   const { data: session } = useSession();
   const [token, setToken] = useState<string | null>(null);
 
@@ -30,14 +30,16 @@ export default function ConnectBank() {
 
   const config: PlaidLinkOptions = {
     onSuccess: async (public_token, metadata) => {
-      const res = await axios.post("/api/plaid/access-token", {
-        user_id: session?.data?.user.id,
-        public_token,
-        metadata,
-      });
+      if (session?.data?.user) {
+        await axios.post("/api/plaid/access-token", {
+          user_id: session.data.user.id,
+          public_token,
+          metadata,
+        });
 
-      updateData.mutate(session?.data?.user.id);
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+        updateData.mutate(session.data.user.id);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
     },
     onExit: (err, metadata) => {
       console.log("Plaid Link exited");

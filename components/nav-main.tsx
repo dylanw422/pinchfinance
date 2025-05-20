@@ -32,8 +32,21 @@ export function NavMain({
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton tooltip={item.title}>
-              {item.icon && <item.icon className="text-foreground" />}
-              <Link href={item.url} className="text-foreground">
+              {item.icon && (
+                <item.icon
+                  className={` ${
+                    item.title === "Pinch Assistant" ? "text-pink-300" : "text-foreground"
+                  }`}
+                />
+              )}
+              <Link
+                href={item.url}
+                className={` ${
+                  item.title === "Pinch Assistant"
+                    ? "bg-gradient-to-r from-pink-300 to-purple-300 text-transparent bg-clip-text"
+                    : "text-foreground"
+                }`}
+              >
                 {item.title}
               </Link>
             </SidebarMenuButton>

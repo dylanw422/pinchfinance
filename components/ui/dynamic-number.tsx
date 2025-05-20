@@ -10,19 +10,46 @@ export default function DynamicNumber({
   className?: string;
 }) {
   const motionValue = useMotionValue(0);
-  const [displayValue, setDisplayValue] = useState("0");
+  const [displayValue, setDisplayValue] = useState(() => {
+    const num = Number(value);
+    if (typeof num !== "number" || isNaN(num)) return "$0.00";
+
+    if (num % 1 === 0) {
+      return `$${num.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}`;
+    } else {
+      return `$${num.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+    }
+  });
 
   useEffect(() => {
     const controls = animate(motionValue, Number(value), {
-      duration: 0.4, //speed adjustment
+      duration: 0.3, //speed adjustment
       ease: "easeInOut",
       onUpdate: (latest) => {
-        setDisplayValue(
-          `$${latest?.toLocaleString(undefined, {
+        if (typeof latest !== "number") {
+          setDisplayValue("$0.00");
+          return;
+        }
+
+        let formattedNumber;
+        if (latest % 1 === 0) {
+          formattedNumber = latest.toLocaleString(undefined, {
             minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          });
+        } else {
+          formattedNumber = latest.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-          })}`
-        );
+          });
+        }
+        setDisplayValue(`$${formattedNumber}`);
       },
     });
 

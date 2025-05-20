@@ -5,7 +5,7 @@ import DynamicNumber from "../ui/dynamic-number";
 
 export default function Balance({ balance, className }: { balance: string; className?: string }) {
   return (
-    <div className={cn("border rounded-lg p-4", className)}>
+    <div className={cn("border rounded-lg p-4 flex flex-col h-full", className)}>
       <h1 className="text-foreground/75 text-sm">My Balance</h1>
       <div className="flex items-center space-x-2 pt-4">
         <DynamicNumber value={balance} className="text-4xl font-medium" />
@@ -17,7 +17,7 @@ export default function Balance({ balance, className }: { balance: string; class
           from last month
         </h1>
       </div>
-      <div className="pt-8 w-full flex justify-between space-x-4 font-bold">
+      <div className="pt-8 w-full flex justify-between space-x-4 font-bold mt-auto">
         <Button variant={"secondary"} className="flex-1">
           Send
         </Button>

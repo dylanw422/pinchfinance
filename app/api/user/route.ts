@@ -1,4 +1,4 @@
-import { canUpdatePlaid, getPlaidItems, getUserData, insertPlaidBalance } from "@/db/queries";
+import { getPlaidItems, getUserData, insertPlaidBalance } from "@/db/queries";
 import { auth } from "@/lib/auth";
 import { plaidUrl } from "@/lib/plaid";
 import axios from "axios";

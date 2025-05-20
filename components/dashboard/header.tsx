@@ -17,7 +17,7 @@ export default function Header({ user }: { user: any }) {
   const [notifications, setNotifications] = useState([]);
 
   return (
-    <div className="py-2 flex gap-2 sticky top-0 bg-background">
+    <div className="py-2 flex gap-2 sticky top-0 z-10 bg-background">
       <Select value={selectedAccountId ?? ""} onValueChange={(id) => setSelectedAccount(id)}>
         <SelectTrigger className="bg-secondary sm:w-[180px] text-sm h-8">
           <SelectValue placeholder="Select Account"></SelectValue>

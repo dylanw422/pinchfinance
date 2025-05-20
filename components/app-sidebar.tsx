@@ -15,6 +15,8 @@ import {
   PiggyBank,
   CreditCard,
   Landmark,
+  Sparkle,
+  Sparkles,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -55,12 +57,7 @@ const data = {
       icon: Layers2,
       items: [],
     },
-    {
-      title: "Pinch Assistant",
-      url: "#",
-      icon: Bot,
-      items: [],
-    },
+
     {
       title: "Investing",
       url: "#",
@@ -77,6 +74,12 @@ const data = {
       title: "Virtual Cards",
       url: "#",
       icon: CreditCard,
+    },
+    {
+      title: "Pinch Assistant",
+      url: "#",
+      icon: Sparkle,
+      items: [],
     },
   ],
 };
