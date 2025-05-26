@@ -26,8 +26,7 @@ export default function Profile() {
 
   return (
     <div
-      onMouseEnter={toggleOpen}
-      onMouseLeave={toggleOpen}
+      onMouseDown={toggleOpen}
       className="fixed bottom-4 right-4 flex items-end flex-row gap-4 text-xs"
     >
       <AnimatePresence>

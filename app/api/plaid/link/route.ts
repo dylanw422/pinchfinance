@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       user: {
         client_user_id: user_id,
       },
-      products: ["transactions"],
+      products: ["transactions", "auth"],
       // redirect_uri: `${
       //   process.env.NODE_ENV === "development"
       //     ? "https://adb4-67-146-252-11.ngrok-free.app/dashboard"

@@ -6,15 +6,18 @@ import MExpense from "@/components/dashboard/m-expense";
 import MIncome from "@/components/dashboard/m-income";
 import More from "@/components/dashboard/more";
 import Statistics from "@/components/dashboard/statistics";
-import Transactions from "@/components/dashboard/transactions";
+import Transactions from "@/components/dashboard/transactions/transactions";
 import { useSession, useUser } from "@/queries/auth";
 import { useSelectedAccount } from "@/queries/selected-account";
-import { useEffect } from "react";
 
 export default function Dashboard() {
   const { data: session } = useSession();
   const { data: user } = useUser();
   const { selectedAccountId } = useSelectedAccount();
+
+  const selectedAccountType = user?.data.plaidAccounts.find(
+    (account: any) => account.id === selectedAccountId
+  )?.type;
 
   // Get the current balance for the selected account
   const accountBalance = user?.data.plaidBalances.find(
@@ -105,34 +108,37 @@ export default function Dashboard() {
   const radialChartData = acctTxns ? calculateCategorySpend(monthTxns) : [];
   const averageExpense = averageExpensePerMonth();
 
+  console.log(acctTxns);
+
   return (
     <div className="h-full flex flex-col overflow-auto">
       <Greeting session={session} />
       <div
         id="grid"
-        className="w-full grid grid-cols-2 md:grid-cols-11 grid-rows-5 sm:grid-rows-4 md:grid-rows-3 gap-4 py-4"
+        className="w-full grid grid-cols-2 lg:grid-cols-11 grid-rows-5 md:grid-rows-4 lg:grid-rows-3 gap-4 py-4"
       >
         <Balance
+          accountType={selectedAccountType}
           balance={currentBalance}
-          className="col-span-2 md:col-span-5 xl:col-span-4 row-span-1"
+          className="col-span-2 lg:col-span-5 xl:col-span-4 row-span-1"
         />
         <MIncome
           prevIncome={prevMonthIncomeTotal}
           income={monthIncomeTotal}
-          className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1"
+          className="col-span-2 md:col-span-1 lg:col-span-3 xl:col-span-2 row-span-1"
         />
         <MExpense
           prevExpense={prevMonthExpenseTotal}
           expense={monthExpenseTotal}
-          className="col-span-2 sm:col-span-1 md:col-span-3 xl:col-span-2 row-span-1"
+          className="col-span-2 md:col-span-1 lg:col-span-3 xl:col-span-2 row-span-1"
         />
         <AllExpense
           averageExpense={averageExpense}
           monthSpend={monthExpenseTotal}
           chartData={radialChartData}
-          className="col-span-2 md:col-span-4 xl:col-span-3 row-span-2 md:row-span-2"
+          className="col-span-2 lg:col-span-4 xl:col-span-3 row-span-2 lg:row-span-2"
         />
-        <Statistics className="col-span-2 md:col-span-7 xl:col-span-8 row-span-2 md:row-span-2" />
+        <Statistics className="col-span-2 lg:col-span-7 xl:col-span-8 row-span-2 lg:row-span-2" />
         <More className="col-span-3 row-span-1" />
       </div>
       <Transactions txns={acctTxns} />

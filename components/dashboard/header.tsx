@@ -17,13 +17,14 @@ export default function Header({ user }: { user: any }) {
   const [notifications, setNotifications] = useState([]);
 
   return (
-    <div className="py-2 flex gap-2 sticky top-0 z-10 bg-background">
+    <div className="py-2 flex gap-2 top-0 z-10">
       <Select value={selectedAccountId ?? ""} onValueChange={(id) => setSelectedAccount(id)}>
         <SelectTrigger className="bg-secondary sm:w-[180px] text-sm h-8">
           <SelectValue placeholder="Select Account"></SelectValue>
         </SelectTrigger>
         <SelectContent className="bg-secondary text-sm">
           {user?.data.plaidAccounts
+            .filter((account: any) => account.type === "depository")
             .sort((a: any, b: any) => a.name.localeCompare(b.name))
             .map((account: any, index: number) => {
               return (

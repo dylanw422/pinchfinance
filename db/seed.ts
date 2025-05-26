@@ -4,7 +4,116 @@ import { plaidTransaction } from "./schema";
 import { db } from "./index";
 import { addDays } from "date-fns";
 
-const plaidAccountId = "55b03223-2c03-4927-9fa4-f808829d447b";
+const plaidAccountId = "9b134d76-01bb-4a0b-89b8-b5dc6afbd759";
+
+const companies = [
+  "Walmart Store",
+  "Amazon.com", // Or "Amzn Mktp"
+  "Target Stores",
+  "Costco Whsl",
+  "Kroger",
+  "Home Depot",
+  "Lowes",
+  "CVS/Pharmacy", // CVS is an acronym
+  "Walgreens",
+  "McDonalds",
+  "Starbucks Coffee",
+  "Best Buy",
+  "Apple.com/Bill", // Or "Apple Store"
+  "Google *Svcs",
+  "Microsoft *MsBill",
+  "Netflix.com",
+  "Disney Plus", // Or "WDW", "Disney Store"
+  "ExxonMobil",
+  "Shell Oil",
+  "BP#", // BP is an acronym
+  "Chevron",
+  "ATT*Bill", // ATT is an acronym
+  "Verizon Wrls",
+  "T-Mobile",
+  "Comcast Cable",
+  "Spectrum",
+  "Uber Trip",
+  "Lyft Ride",
+  "DoorDash",
+  "Grubhub",
+  "Subway",
+  "Burger King",
+  "Wendys",
+  "Taco Bell",
+  "KFC", // KFC is an acronym
+  "Pizza Hut",
+  "Dominos Pizza",
+  "Chipotle",
+  "Panera Bread",
+  "Dunkin #",
+  "7-Eleven",
+  "Wholefds Mkt", // Whole Foods Market
+  "Trader Joes",
+  "Aldi",
+  "Publix Super Mkt",
+  "Macys",
+  "Kohls Dept Strs",
+  "Nordstrom",
+  "Gap Store", // Or "Old Navy", "Banana Rep"
+  "Nike Retail",
+  "Adidas Store",
+  "Under Armour",
+  "Lululemon Athl",
+  "Sephora",
+  "Ulta Beauty",
+  "TJ Maxx",
+  "Ross Stores",
+  "Ikea",
+  "Wayfair LLC",
+  "Petco",
+  "PetSmart",
+  "AutoZone",
+  "O'Reilly Auto",
+  "Advance Auto Parts",
+  "Jiffy Lube",
+  "Spotify USA",
+  "Hulu",
+  "Max", // Formerly HBO Max
+  "Etsy.com",
+  "eBay",
+  "PayPal *Merchant",
+  "Visa",
+  "Mastercard",
+  "American Express",
+  "Delta Air",
+  "American Air",
+  "United Airlines",
+  "Southwest Air",
+  "Marriott",
+  "Hilton Hotels",
+  "Airbnb",
+  "Booking.com",
+  "Expedia.com",
+  "AMC Theatres", // AMC is an acronym
+  "Cinemark",
+  "FedEx",
+  "UPS", // UPS is an acronym
+  "USPS PO", // USPS is an acronym
+  "Staples",
+  "Office Depot",
+  "Barnes & Noble",
+  "GameStop",
+  "Dollar General",
+  "Dollar Tree",
+  "Chick-fil-A",
+  "Popeyes",
+  "Olive Garden",
+  "Applebees",
+  "Chilis Grill Bar",
+  "Cheesecake Fact",
+  "Samsung.com",
+  "Sony", // Or "PlayStation Network"
+  "Nintendo of America",
+  "Ford Dealership",
+  "GM Dealership", // GM is an acronym
+  "Toyota Dealership",
+];
 
 const financeCategories = [
   {
@@ -729,7 +838,7 @@ async function seedTransactions() {
         transactionId: faker.string.alphanumeric(32),
         plaidAccountId,
         accountId: faker.string.alphanumeric(40),
-        name: faker.company.name(),
+        name: companies[Math.floor(Math.random() * companies.length)],
         merchantName: faker.helpers.maybe(() => faker.company.name(), { probability: 0.95 }),
         merchantEntityId: faker.string.alphanumeric(36),
         logoUrl: faker.image.avatar(),

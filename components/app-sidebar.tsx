@@ -88,7 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarContent className="bg-background">
+      <SidebarContent className="bg-background relative">
         <AnimatePresence>
           {state === "expanded" ? (
             <motion.div exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.125 }}>

@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import RunTracker from "@/components/run-tracker";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { url } from "inspector";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isLoading } = useSession();
@@ -42,18 +43,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, []);
 
+  if (isLoading && !user) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarTrigger className="sticky top-0" />
-      <div className="flex flex-col container">
-        <Header user={user} />
-        {user?.data.plaidAccounts.length == 0 ? <ConnectBank /> : children}
-        {runData !== null && (
-          <RunTracker runId={runData?.run.id} accessToken={runData?.run.publicAccessToken} />
-        )}
-        <Profile />
-      </div>
-    </SidebarProvider>
+    <div className="relative">
+      <div
+        style={{
+          backgroundImage: `url('./texture.png')`,
+          opacity: 0.3,
+          backgroundSize: "auto",
+          backgroundRepeat: "repeat",
+        }}
+        className="absolute inset-0 pointer-events-none z-0"
+      />
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarTrigger className="sticky top-0" />
+        <div className="flex flex-col container">
+          <Header user={user} />
+          {user?.data.plaidAccounts.length == 0 ? <ConnectBank /> : children}
+          {runData !== null && (
+            <RunTracker runId={runData?.run.id} accessToken={runData?.run.publicAccessToken} />
+          )}
+          <Profile />
+        </div>
+      </SidebarProvider>
+    </div>
   );
 }

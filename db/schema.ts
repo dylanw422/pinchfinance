@@ -75,6 +75,8 @@ export const plaidAccount = pgTable("plaid_account", {
     .notNull()
     .references(() => plaidItem.id, { onDelete: "cascade" }),
   accountId: text("account_id").notNull().unique(),
+  routingNumber: text("routing_number"),
+  accountNumber: text("account_number"),
   name: text("name").notNull(),
   mask: text("mask"),
   type: text("type"),
