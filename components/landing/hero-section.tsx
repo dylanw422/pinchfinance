@@ -45,31 +45,34 @@ export default function HeroSection() {
   };
 
   return (
-    <section id="hero" className="relative mx-auto mt-32 max-w-[80rem] px-6 text-center md:px-8">
-      <div className="backdrop-filter-[12px] inline-flex h-7 items-center justify-between rounded-full border border-white/5 bg-white/10 px-3 text-xs text-white dark:text-black transition-all ease-in hover:cursor-pointer hover:bg-white/20 group gap-1 translate-y-[-1rem] animate-fade-in opacity-0">
+    <section
+      id="hero"
+      className="relative mx-auto mt-32 max-w-[80rem] px-6 text-center md:px-8"
+    >
+      <div className="backdrop-filter-[12px] group inline-flex h-7 translate-y-[-1rem] animate-fade-in items-center justify-between gap-1 rounded-full border border-white/5 bg-white/10 px-3 text-xs text-white opacity-0 transition-all ease-in hover:cursor-pointer hover:bg-white/20 dark:text-black">
         <TextShimmer className="inline-flex items-center justify-center">
           <span>✨ Introducing Pinch</span>{" "}
           <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
         </TextShimmer>
       </div>
-      <h1 className="bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text py-6 text-4xl font-medium leading-none tracking-tighter text-transparent text-balance sm:text-5xl md:text-6xl lg:text-7xl translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
+      <h1 className="translate-y-[-1rem] animate-fade-in text-balance bg-gradient-to-br from-black from-30% to-black/40 bg-clip-text py-6 text-4xl font-medium leading-none tracking-tighter text-transparent opacity-0 [--animation-delay:200ms] dark:from-white dark:to-white/40 sm:text-5xl md:text-6xl lg:text-7xl">
         Pinch is the smarter way
         <br className="hidden md:block" /> to manage your money
       </h1>
-      <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
+      <p className="mb-12 translate-y-[-1rem] animate-fade-in text-balance text-lg tracking-tight text-gray-400 opacity-0 [--animation-delay:400ms] md:text-xl">
         Track spending, set goals, and get AI-powered insights
         <br className="hidden md:block" /> into your spending.
       </p>
-      <div className="flex flex-col sm:flex-row w-full justify-center gap-4">
+      <div className="flex w-full flex-col justify-center gap-4 sm:flex-row">
         <Input
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full sm:w-1/4 bg-primary/10 backdrop-blur-md translate-y-[-1rem] animate-fade-in opacity-0 ease-in-out [--animation-delay:600ms]"
+          className="w-full translate-y-[-1rem] animate-fade-in bg-primary/10 opacity-0 backdrop-blur-md ease-in-out [--animation-delay:600ms] sm:w-1/4"
           placeholder="Email address..."
           value={email}
         />
         <Button
           onMouseDown={submitForm}
-          className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:600ms] border-b-4 border-black/20 active:border-b-0 transition-all"
+          className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg border-b-4 border-black/20 text-white opacity-0 transition-all ease-in-out [--animation-delay:600ms] active:border-b-0 dark:text-black"
         >
           <span>Join Waitlist</span>
           <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />

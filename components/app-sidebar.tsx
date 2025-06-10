@@ -20,7 +20,12 @@ import {
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { Sidebar, SidebarContent, SidebarRail, useSidebar } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarRail,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import NavHeader from "./nav-header";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -88,10 +93,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarContent className="bg-background relative">
+      <SidebarContent className="relative bg-background">
         <AnimatePresence>
           {state === "expanded" ? (
-            <motion.div exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.125 }}>
+            <motion.div
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.125 }}
+            >
               <NavHeader />
             </motion.div>
           ) : null}

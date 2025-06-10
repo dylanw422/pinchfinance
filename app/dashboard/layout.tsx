@@ -11,7 +11,11 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "inspector";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { data: session, isLoading } = useSession();
   const { data: user } = useUser();
   const hasUpdated = useRef(false);
@@ -44,7 +48,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, []);
 
   if (isLoading && !user) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -56,16 +64,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           backgroundSize: "auto",
           backgroundRepeat: "repeat",
         }}
-        className="absolute inset-0 pointer-events-none z-0"
+        className="pointer-events-none absolute inset-0 z-0"
       />
       <SidebarProvider>
         <AppSidebar />
         <SidebarTrigger className="sticky top-0" />
-        <div className="flex flex-col container">
+        <div className="container flex flex-col">
           <Header user={user} />
           {user?.data.plaidAccounts.length == 0 ? <ConnectBank /> : children}
           {runData !== null && (
-            <RunTracker runId={runData?.run.id} accessToken={runData?.run.publicAccessToken} />
+            <RunTracker
+              runId={runData?.run.id}
+              accessToken={runData?.run.publicAccessToken}
+            />
           )}
           <Profile />
         </div>

@@ -73,7 +73,11 @@ export function DataTable<TData extends { amount: number }, TValue>({
   const renderArrow = (columnId: string) => {
     const sort = sorting?.find((s) => s.id === columnId);
     if (!sort) return null;
-    return sort.desc ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />;
+    return sort.desc ? (
+      <ChevronDown className="h-5 w-5" />
+    ) : (
+      <ChevronUp className="h-5 w-5" />
+    );
   };
 
   return (
@@ -132,7 +136,10 @@ export function DataTable<TData extends { amount: number }, TValue>({
                     <TableHead className="px-4" key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}
@@ -143,20 +150,26 @@ export function DataTable<TData extends { amount: number }, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className={`${"hover:bg-violet-950/30 cursor-pointer"} `}
+                  className={`${"cursor-pointer hover:bg-violet-950/30"} `}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="px-4" key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>

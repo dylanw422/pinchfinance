@@ -4,12 +4,17 @@ import { Button } from "../ui/button";
 export default function More({ className }: { className?: string }) {
   return (
     <div
-      className={cn("bg-secondary border rounded-lg p-4 hidden xl:flex flex-col h-full", className)}
+      className={cn(
+        "hidden h-full flex-col rounded-lg border bg-secondary p-4 xl:flex",
+        className,
+      )}
     >
-      <h1 className=" text-violet-200 text-lg font-medium">Learn More</h1>
-      <div className="mt-auto text-foreground/75 text-sm flex justify-between items-end space-x-2">
-        <h1 className="">To learn more about our data points, read our blog post.</h1>
-        <Button className="text-xs h-8">Blog Post</Button>
+      <h1 className="text-lg font-medium text-violet-200">Learn More</h1>
+      <div className="mt-auto flex items-end justify-between space-x-2 text-sm text-foreground/75">
+        <h1 className="">
+          To learn more about our data points, read our blog post.
+        </h1>
+        <Button className="h-8 text-xs">Blog Post</Button>
       </div>
     </div>
   );

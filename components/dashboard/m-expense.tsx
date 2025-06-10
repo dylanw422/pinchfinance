@@ -32,20 +32,22 @@ export default function MExpense({
   const percentChangeDisplay = Math.abs(percentChange);
 
   return (
-    <div className={cn(" border rounded-lg p-4 flex flex-col h-full", className)}>
-      <h1 className="text-foreground/75 text-sm">Month&apos;s Expenses</h1>
-      <DynamicNumber value={expense} className="text-4xl pt-4 font-medium" />
+    <div
+      className={cn("flex h-full flex-col rounded-lg border p-4", className)}
+    >
+      <h1 className="text-sm text-foreground/75">Month&apos;s Expenses</h1>
+      <DynamicNumber value={expense} className="pt-4 text-4xl font-medium" />
       {typeof percentChange === "number" && (
-        <h1 className="text-sm text-foreground/75 text-start mt-auto">
+        <h1 className="mt-auto text-start text-sm text-foreground/75">
           <span
             className={`flex items-center gap-1 ${
               percentChange < 0 ? "text-pink-300" : "text-green-300"
             }`}
           >
             {percentChange < 0 ? (
-              <TrendingDown className="w-4 h-4" />
+              <TrendingDown className="h-4 w-4" />
             ) : (
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp className="h-4 w-4" />
             )}
             {percentChangeDisplay.toFixed(2)}%{" "}
           </span>

@@ -35,7 +35,9 @@ export function NavMain({
               {item.icon && (
                 <item.icon
                   className={` ${
-                    item.title === "Pinch Assistant" ? "text-pink-300" : "text-foreground"
+                    item.title === "Pinch Assistant"
+                      ? "text-pink-300"
+                      : "text-foreground"
                   }`}
                 />
               )}
@@ -43,7 +45,7 @@ export function NavMain({
                 href={item.url}
                 className={` ${
                   item.title === "Pinch Assistant"
-                    ? "bg-gradient-to-r from-pink-300 to-purple-300 text-transparent bg-clip-text"
+                    ? "bg-gradient-to-r from-pink-300 to-purple-300 bg-clip-text text-transparent"
                     : "text-foreground"
                 }`}
               >

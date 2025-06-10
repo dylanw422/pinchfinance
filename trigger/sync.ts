@@ -25,11 +25,14 @@ export const syncTask = task({
 
         try {
           // === BALANCES ===
-          const plaidBalances = await axios.post(`https://sandbox.plaid.com/accounts/balance/get`, {
-            access_token: accessToken,
-            secret: process.env.PLAID_SANDBOX_KEY,
-            client_id: process.env.PLAID_CLIENT_ID,
-          });
+          const plaidBalances = await axios.post(
+            `https://sandbox.plaid.com/accounts/balance/get`,
+            {
+              access_token: accessToken,
+              secret: process.env.PLAID_SANDBOX_KEY,
+              client_id: process.env.PLAID_CLIENT_ID,
+            },
+          );
           const accounts = plaidBalances.data.accounts;
           await Promise.all(
             accounts.map(async (account: any) => {
@@ -42,9 +45,9 @@ export const syncTask = task({
                 account.balances.unofficial_currency_code ?? "",
                 account.balances.as_of,
                 new Date(),
-                new Date()
+                new Date(),
               );
-            })
+            }),
           );
 
           // === TRANSACTIONS ===
@@ -60,7 +63,7 @@ export const syncTask = task({
                 secret: process.env.PLAID_SANDBOX_KEY,
                 client_id: process.env.PLAID_CLIENT_ID,
                 cursor: cursor || null,
-              }
+              },
             );
 
             const data = plaidTransactions.data;
@@ -93,7 +96,7 @@ export const syncTask = task({
               txn.personal_finance_category.confidence_level,
               txn.personal_finance_category_icon_url,
               new Date(),
-              new Date()
+              new Date(),
             );
           }
 
@@ -103,7 +106,7 @@ export const syncTask = task({
         } catch (e) {
           console.log(e);
         }
-      })
+      }),
     );
 
     return {

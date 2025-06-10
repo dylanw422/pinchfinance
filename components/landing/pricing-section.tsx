@@ -122,16 +122,16 @@ export default function PricingSection() {
           </span>
         </div>
 
-        <div className="mx-auto grid w-full justify-center sm:grid-cols-2 lg:grid-cols-4 flex-col gap-4">
+        <div className="mx-auto grid w-full flex-col justify-center gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {demoPrices.map((price, idx) => (
             <div
               key={price.id}
               className={cn(
-                "relative flex max-w-[400px] flex-col gap-8 rounded-2xl border p-4 text-black dark:text-white overflow-hidden",
+                "relative flex max-w-[400px] flex-col gap-8 overflow-hidden rounded-2xl border p-4 text-black dark:text-white",
                 {
                   "border-2 border-[var(--color-one)] dark:border-[var(--color-one)]":
                     price.isMostPopular,
-                }
+                },
               )}
             >
               <div className="flex items-center">
@@ -178,7 +178,7 @@ export default function PricingSection() {
               <Button
                 className={cn(
                   "group relative w-full gap-2 overflow-hidden text-lg font-semibold tracking-tighter",
-                  "transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
+                  "transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2",
                 )}
                 disabled={isLoading}
                 onClick={() => void onSubscribeClick(price.id)}

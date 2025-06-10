@@ -27,7 +27,7 @@ export default function Profile() {
   return (
     <div
       onMouseDown={toggleOpen}
-      className="fixed bottom-4 right-4 flex items-end flex-row gap-4 text-xs"
+      className="fixed bottom-4 right-4 flex flex-row items-end gap-4 text-xs"
     >
       <AnimatePresence>
         {isOpen && (
@@ -48,7 +48,7 @@ export default function Profile() {
       </AnimatePresence>
 
       <button>
-        <User className="border border-foreground/50 p-1 h-7 w-7 text-foreground/50 rounded-full hover:cursor transition-all hover:border-foreground hover:text-foreground bg-slate-900" />
+        <User className="hover:cursor h-7 w-7 rounded-full border border-foreground/50 bg-slate-900 p-1 text-foreground/50 transition-all hover:border-foreground hover:text-foreground" />
       </button>
     </div>
   );

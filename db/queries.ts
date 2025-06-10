@@ -24,30 +24,42 @@ export const addPlaidItem = async (
   institutionName: string,
   itemId: string,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 ) => {
   return await db
     .insert(plaidItem)
-    .values({ userId, accessToken, institutionId, institutionName, itemId, createdAt, updatedAt })
+    .values({
+      userId,
+      accessToken,
+      institutionId,
+      institutionName,
+      itemId,
+      createdAt,
+      updatedAt,
+    })
     .returning();
 };
 
 export const addPlaidAccount = async (
   plaidItemId: string,
   accountId: string,
+  routingNumber: string | null,
+  accountNumber: string | null,
   name: string,
   mask: string,
   type: string,
   subtype: string,
   officialName: string,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 ) => {
   return await db
     .insert(plaidAccount)
     .values({
       plaidItemId,
       accountId,
+      routingNumber,
+      accountNumber,
       name,
       mask,
       type,
@@ -68,6 +80,7 @@ export const getUserData = async (user_id: string | undefined) => {
       name: plaidAccount.name,
       plaidItemId: plaidItem.id,
       type: plaidAccount.type,
+      accountNumber: plaidAccount.accountNumber,
     })
     .from(plaidAccount)
     .innerJoin(plaidItem, eq(plaidAccount.plaidItemId, plaidItem.id))
@@ -115,7 +128,7 @@ export const insertPlaidBalance = async (
   unofficialCurrencyCode: string,
   asOf: Date,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 ) => {
   const referenceAccount = await db
     .select()
@@ -161,7 +174,7 @@ export const insertPlaidTransaction = async (
   personalFinanceConfidenceLevel: string | null,
   personalFinanceCategoryIconUrl: string | null,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 ) => {
   const referenceAccount = await db
     .select()
@@ -215,7 +228,10 @@ export const getCursorForItem = async (id: string) => {
   return result[0]?.cursor ?? null;
 };
 
-export const updateTransactionCursor = async (id: string, cursor: string | null) => {
+export const updateTransactionCursor = async (
+  id: string,
+  cursor: string | null,
+) => {
   return await db
     .update(plaidCursor)
     .set({

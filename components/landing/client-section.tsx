@@ -29,14 +29,20 @@ export default function ClientSection() {
   const { data: userCount } = useUserCount();
 
   return (
-    <section id="clients" className="text-center mx-auto max-w-[80rem] px-6 md:px-8">
+    <section
+      id="clients"
+      className="mx-auto max-w-[80rem] px-6 text-center md:px-8"
+    >
       <div className="py-14">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
           <h2 className="text-center text-sm font-semibold">
             JOIN {userCount} OTHER USERS ON OUR WAITLIST
           </h2>
-          <div className="mt-6 w-full flex justify-center">
-            <AvatarCircles numPeople={userCount - 6} avatarUrls={avatars.slice(0, userCount)} />
+          <div className="mt-6 flex w-full justify-center">
+            <AvatarCircles
+              numPeople={userCount - 6}
+              avatarUrls={avatars.slice(0, userCount)}
+            />
           </div>
         </div>
       </div>

@@ -65,7 +65,10 @@ const shuffleArray = (array: any[]) => {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
     // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
   return array;
 };
@@ -96,7 +99,7 @@ const Card = (card: { icon: JSX.Element; bg: JSX.Element }) => {
         // light styles
         "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
         // dark styles
-        "transform-gpu dark:bg-transparent dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]"
+        "transform-gpu dark:bg-transparent dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
       )}
     >
       {card.icon}
@@ -123,10 +126,14 @@ export default function CallToActionSection() {
 
   return (
     <section id="cta">
-      <div className="py-14 mt-24">
+      <div className="mt-24 py-14">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-            <Marquee reverse className="-delay-[200ms] [--duration:10s]" repeat={5}>
+            <Marquee
+              reverse
+              className="-delay-[200ms] [--duration:10s]"
+              repeat={5}
+            >
               {randomTiles1.map((review, idx) => (
                 <Card key={idx} {...review} />
               ))}
@@ -136,7 +143,11 @@ export default function CallToActionSection() {
                 <Card key={idx} {...review} />
               ))}
             </Marquee>
-            <Marquee reverse className="-delay-[200ms] [--duration:20s]" repeat={5}>
+            <Marquee
+              reverse
+              className="-delay-[200ms] [--duration:20s]"
+              repeat={5}
+            >
               {randomTiles1.map((review, idx) => (
                 <Card key={idx} {...review} />
               ))}
@@ -146,7 +157,11 @@ export default function CallToActionSection() {
                 <Card key={idx} {...review} />
               ))}
             </Marquee>
-            <Marquee reverse className="-delay-[200ms] [--duration:20s]" repeat={5}>
+            <Marquee
+              reverse
+              className="-delay-[200ms] [--duration:20s]"
+              repeat={5}
+            >
               {randomTiles3.map((review, idx) => (
                 <Card key={idx} {...review} />
               ))}
@@ -160,11 +175,13 @@ export default function CallToActionSection() {
               <div className="mx-auto size-24 rounded-[2rem] border bg-white/10 p-3 shadow-2xl backdrop-blur-md dark:bg-black/10 lg:size-32">
                 <WalletMinimal className="mx-auto size-16 text-black dark:text-white lg:size-24" />
               </div>
-              <div className="z-10 mt-4 flex flex-col items-center text-center text-primary container">
+              <div className="container z-10 mt-4 flex flex-col items-center text-center text-primary">
                 <h1 className="text-3xl font-bold lg:text-4xl">
                   Stop wasting time on Excel sheets.
                 </h1>
-                <p className="mt-2">Join the waitlist today and put more money in your wallet</p>
+                <p className="mt-2">
+                  Join the waitlist today and put more money in your wallet
+                </p>
                 <Link
                   href="#"
                   className={cn(
@@ -172,14 +189,14 @@ export default function CallToActionSection() {
                       size: "lg",
                       variant: "ghost",
                     }),
-                    "group mt-4 rounded-[2rem] px-6"
+                    "group mt-4 rounded-[2rem] px-6",
                   )}
                 >
                   Get Started
                   <ChevronRight className="ml-1 size-4 transition-all duration-300 ease-out group-hover:translate-x-1" />
                 </Link>
               </div>
-              <div className="absolute inset-0 -z-10 rounded-full  bg-backtround opacity-40 blur-xl dark:bg-background" />
+              <div className="bg-backtround absolute inset-0 -z-10 rounded-full opacity-40 blur-xl dark:bg-background" />
             </div>
             <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent to-background to-70% dark:to-background" />
           </div>

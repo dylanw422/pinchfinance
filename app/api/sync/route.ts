@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       {
         message: `Data updates once every 12 hours. Refreshing in ${hours} hours and ${minutes} minutes.`,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }
 

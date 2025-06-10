@@ -21,6 +21,7 @@ export const useAddUser = () => {
 
       return res;
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["user-count"] }),
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["user-count"] }),
   });
 };

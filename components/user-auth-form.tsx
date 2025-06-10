@@ -1,7 +1,13 @@
 "use client";
 
 import { buttonVariants } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -25,7 +31,12 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   signIn?: boolean;
 }
 
-export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFormProps) {
+export function UserAuthForm({
+  className,
+  signUp,
+  signIn,
+  ...props
+}: UserAuthFormProps) {
   const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(userAuthSchema),
@@ -58,7 +69,7 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
           onSuccess: () => {
             router.push("/dashboard");
           },
-        }
+        },
       );
     }
 
@@ -80,7 +91,7 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
           onSuccess: () => {
             router.push("/dashboard");
           },
-        }
+        },
       );
     }
 
@@ -103,7 +114,10 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
               <div className="flex flex-row gap-4">
                 <Input
                   onChange={(e) =>
-                    setFirstName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))
+                    setFirstName(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    )
                   }
                   className="bg-primary/10 backdrop-blur-md"
                   placeholder="first name"
@@ -112,7 +126,10 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
                 />
                 <Input
                   onChange={(e) =>
-                    setLastName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))
+                    setLastName(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    )
                   }
                   className="bg-primary/10 backdrop-blur-md"
                   placeholder="last name"
@@ -167,7 +184,7 @@ export function UserAuthForm({ className, signUp, signIn, ...props }: UserAuthFo
               type="submit"
               className={cn(
                 buttonVariants(),
-                "border-b-4 border-black/20 active:border-b-0 transition-all"
+                "border-b-4 border-black/20 transition-all active:border-b-0",
               )}
               disabled={isLoading || isGitHubLoading}
             >

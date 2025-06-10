@@ -50,16 +50,17 @@ export default function ConnectBank() {
   const { open, ready } = usePlaidLink(config);
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center justify-center">
-      <div className="bg-pink-300/5 rounded-lg p-8 flex flex-col items-center gap-4">
-        <h1 className="text-xl text-center">Connect a bank account</h1>
+    <div className="flex w-full flex-1 flex-col items-center justify-center">
+      <div className="flex flex-col items-center gap-4 rounded-lg bg-pink-300/5 p-8">
+        <h1 className="text-center text-xl">Connect a bank account</h1>
         <Button
           onMouseDown={() => open()}
           disabled={!ready || !session}
           variant={"secondary"}
           className="font-bold"
         >
-          Connect with <img src="/plaid_logo.svg" alt="plaid logo" className="h-6 pl-1" />
+          Connect with{" "}
+          <img src="/plaid_logo.svg" alt="plaid logo" className="h-6 pl-1" />
         </Button>
       </div>
     </div>

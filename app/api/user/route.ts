@@ -10,7 +10,9 @@ export async function GET(req: Request) {
   });
 
   if (!session?.user.id) {
-    return Response.json({ message: "You must be signed in to access this endpoint." });
+    return Response.json({
+      message: "You must be signed in to access this endpoint.",
+    });
   }
 
   try {

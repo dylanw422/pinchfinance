@@ -10,7 +10,10 @@ export async function POST(req: Request) {
     }
   } catch (error: any) {
     if (error.code === "23505") {
-      return Response.json({ message: "Already on the waitlist" }, { status: 409 });
+      return Response.json(
+        { message: "Already on the waitlist" },
+        { status: 409 },
+      );
     }
 
     return Response.json({ message: "error" });

@@ -15,51 +15,68 @@ export default function Dashboard() {
   const { data: user } = useUser();
   const { selectedAccountId } = useSelectedAccount();
 
-  const selectedAccountType = user?.data.plaidAccounts.find(
-    (account: any) => account.id === selectedAccountId
-  )?.type;
-
+  const selectedAccount = user?.data.plaidAccounts.find(
+    (account: any) => account.id === selectedAccountId,
+  );
   // Get the current balance for the selected account
   const accountBalance = user?.data.plaidBalances.find(
-    (balance: any) => balance.plaidAccountId === selectedAccountId
+    (balance: any) => balance.plaidAccountId === selectedAccountId,
   );
   const currentBalance = accountBalance?.current ?? null;
 
   // All transactions for the selected account
   const acctTxns = user?.data.plaidTransactions?.filter(
-    (transaction: any) => transaction.plaidAccountId === selectedAccountId
+    (transaction: any) => transaction.plaidAccountId === selectedAccountId,
   );
 
   // Filter transactions by current month
   const monthTxns = acctTxns?.filter(
     (txn: any) =>
       new Date(txn.date).getMonth() === new Date().getMonth() &&
-      new Date(txn.date).getFullYear() === new Date().getFullYear()
+      new Date(txn.date).getFullYear() === new Date().getFullYear(),
   );
 
   const prevMonthTxns = acctTxns?.filter(
     (txn: any) =>
       new Date(txn.date).getMonth() === new Date().getMonth() - 1 &&
       new Date(txn.date).getFullYear() === new Date().getFullYear() &&
-      new Date(txn.date).getDate() <= new Date().getDate()
+      new Date(txn.date).getDate() <= new Date().getDate(),
   );
 
   // Calculate monthly income and expense
   const monthIncome = monthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
   const monthIncomeTotal =
-    Math.abs(monthIncome.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0)) ?? 0;
+    Math.abs(
+      monthIncome.reduce(
+        (acc: number, curr: any) => acc + Number(curr.amount),
+        0,
+      ),
+    ) ?? 0;
 
   const monthExpense = monthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
   const monthExpenseTotal =
-    monthExpense.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
+    monthExpense.reduce(
+      (acc: number, curr: any) => acc + Number(curr.amount),
+      0,
+    ) ?? 0;
 
-  const prevMonthIncome = prevMonthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
+  const prevMonthIncome =
+    prevMonthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
   const prevMonthIncomeTotal =
-    Math.abs(prevMonthIncome.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0)) ?? 0;
+    Math.abs(
+      prevMonthIncome.reduce(
+        (acc: number, curr: any) => acc + Number(curr.amount),
+        0,
+      ),
+    ) ?? 0;
 
-  const prevMonthExpense = prevMonthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
+  const prevMonthExpense =
+    prevMonthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
   const prevMonthExpenseTotal =
-    prevMonthExpense.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
+    prevMonthExpense.reduce(
+      (acc: number, curr: any) => acc + Number(curr.amount),
+      0,
+    ) ?? 0;
 
   // Sort transactions for radial chart data: spend per category
   const calculateCategorySpend = (txns: any[]) => {
@@ -69,7 +86,9 @@ export default function Dashboard() {
       const amount = Math.abs(parseFloat(txn.amount));
       // if (txn.personalFinanceCategoryPrimary === "INCOME") continue;
       const category =
-        rawAmount < 0 ? "INCOME" : txn.personalFinanceCategoryPrimary || "UNCATEGORIZED";
+        rawAmount < 0
+          ? "INCOME"
+          : txn.personalFinanceCategoryPrimary || "UNCATEGORIZED";
 
       if (!isNaN(amount)) {
         categoryMap[category] = (categoryMap[category] || 0) + amount;
@@ -95,14 +114,20 @@ export default function Dashboard() {
       if (txn.amount > 0) {
         const date = new Date(txn.date);
         const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
-        monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + Number(txn.amount);
+        monthlyTotals[monthKey] =
+          (monthlyTotals[monthKey] || 0) + Number(txn.amount);
       }
     }
 
     const totalMonths = Object.keys(monthlyTotals).length;
-    const totalExpense = Object.values(monthlyTotals).reduce((sum, val) => sum + val, 0);
+    const totalExpense = Object.values(monthlyTotals).reduce(
+      (sum, val) => sum + val,
+      0,
+    );
 
-    return totalMonths > 0 ? parseFloat((totalExpense / totalMonths).toFixed(2)) : 0;
+    return totalMonths > 0
+      ? parseFloat((totalExpense / totalMonths).toFixed(2))
+      : 0;
   };
 
   const radialChartData = acctTxns ? calculateCategorySpend(monthTxns) : [];
@@ -111,34 +136,35 @@ export default function Dashboard() {
   console.log(acctTxns);
 
   return (
-    <div className="h-full flex flex-col overflow-auto">
+    <div className="flex h-full flex-col overflow-auto">
       <Greeting session={session} />
       <div
         id="grid"
-        className="w-full grid grid-cols-2 lg:grid-cols-11 grid-rows-5 md:grid-rows-4 lg:grid-rows-3 gap-4 py-4"
+        className="grid w-full grid-cols-2 grid-rows-5 gap-4 py-4 md:grid-rows-4 lg:grid-cols-11 lg:grid-rows-3"
       >
         <Balance
-          accountType={selectedAccountType}
+          accountType={selectedAccount?.type}
+          accountNumber={selectedAccount?.accountNumber}
           balance={currentBalance}
-          className="col-span-2 lg:col-span-5 xl:col-span-4 row-span-1"
+          className="col-span-2 row-span-1 lg:col-span-5 xl:col-span-4"
         />
         <MIncome
           prevIncome={prevMonthIncomeTotal}
           income={monthIncomeTotal}
-          className="col-span-2 md:col-span-1 lg:col-span-3 xl:col-span-2 row-span-1"
+          className="col-span-2 row-span-1 md:col-span-1 lg:col-span-3 xl:col-span-2"
         />
         <MExpense
           prevExpense={prevMonthExpenseTotal}
           expense={monthExpenseTotal}
-          className="col-span-2 md:col-span-1 lg:col-span-3 xl:col-span-2 row-span-1"
+          className="col-span-2 row-span-1 md:col-span-1 lg:col-span-3 xl:col-span-2"
         />
         <AllExpense
           averageExpense={averageExpense}
           monthSpend={monthExpenseTotal}
           chartData={radialChartData}
-          className="col-span-2 lg:col-span-4 xl:col-span-3 row-span-2 lg:row-span-2"
+          className="col-span-2 row-span-2 lg:col-span-4 lg:row-span-2 xl:col-span-3"
         />
-        <Statistics className="col-span-2 lg:col-span-7 xl:col-span-8 row-span-2 lg:row-span-2" />
+        <Statistics className="col-span-2 row-span-2 lg:col-span-7 lg:row-span-2 xl:col-span-8" />
         <More className="col-span-3 row-span-1" />
       </div>
       <Transactions txns={acctTxns} />

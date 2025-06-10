@@ -2,7 +2,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-const categoryColorMap: Record<string, { bg: string; border: string; text: string }> = {
+const categoryColorMap: Record<
+  string,
+  { bg: string; border: string; text: string }
+> = {
   TRANSPORTATION: {
     bg: "bg-purple-950/50",
     border: "border-purple-300",
@@ -112,7 +115,9 @@ export const columns: ColumnDef<any>[] = [
         currency: "USD",
       }).format(Math.abs(amount));
       return (
-        <div className={`${amount < 0 ? "text-green-300" : ""} text-center `}>{dollarValue}</div>
+        <div className={`${amount < 0 ? "text-green-300" : ""} text-center`}>
+          {dollarValue}
+        </div>
       );
     },
   },
@@ -151,7 +156,7 @@ export const columns: ColumnDef<any>[] = [
       };
 
       return (
-        <div className="flex w-full justify-end text-xs opacity">
+        <div className="opacity flex w-full justify-end text-xs">
           <h1 className={`px-1 py-0.5 ${color.text} ${color.bg}`}>
             {category.split("_").join(" ")}
           </h1>

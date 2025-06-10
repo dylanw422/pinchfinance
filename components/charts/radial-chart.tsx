@@ -33,9 +33,12 @@ export function RadialChart({
   const difference = parseFloat((averageExpense - monthSpend).toFixed(2));
 
   return (
-    <Card className="flex flex-col mt-4 h-full bg-card/50">
+    <Card className="mt-4 flex h-full flex-col bg-card/50">
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto h-[250px] w-full">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto h-[250px] w-full"
+        >
           <RadialBarChart
             data={chartData}
             innerRadius={30}
@@ -51,11 +54,13 @@ export function RadialChart({
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm mt-auto">
-        <div className="flex items-center gap-2 font-medium text-foreground text-center">
+      <CardFooter className="mt-auto flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 text-center font-medium text-foreground">
           <h1>
             So far, you've spent ${difference > 0 ? difference : -difference}{" "}
-            <span className={difference > 0 ? "text-green-300" : "text-pink-300"}>
+            <span
+              className={difference > 0 ? "text-green-300" : "text-pink-300"}
+            >
               {difference > 0 ? "less" : "more"}
             </span>{" "}
             than normal.

@@ -16,7 +16,7 @@ export function SiteHeader() {
             <img src="/pinchFullWhite.webp" alt="" className="h-5" />
           </Link>
           <Link href={session && session.data ? "/dashboard" : "/signin"}>
-            <Button className="h-8 border-b-4 border-black/20 active:border-b-0 transition-all">
+            <Button className="h-8 border-b-4 border-black/20 transition-all active:border-b-0">
               Open App
             </Button>
           </Link>

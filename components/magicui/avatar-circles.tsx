@@ -11,7 +11,11 @@ interface AvatarCirclesProps {
   avatarUrls: Avatar[];
 }
 
-export const AvatarCircles = ({ numPeople, className, avatarUrls }: AvatarCirclesProps) => {
+export const AvatarCircles = ({
+  numPeople,
+  className,
+  avatarUrls,
+}: AvatarCirclesProps) => {
   return (
     <div className={cn("z-10 flex -space-x-4 rtl:space-x-reverse", className)}>
       {avatarUrls.map((url, index) => (
