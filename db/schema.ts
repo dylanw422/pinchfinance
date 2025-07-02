@@ -160,4 +160,6 @@ export const schema = {
   plaidItem,
   plaidAccount,
   plaidBalance,
+  plaidTransaction,
+  plaidCursor
 };

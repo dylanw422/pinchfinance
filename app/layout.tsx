@@ -39,12 +39,12 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang="en" suppressHydrationWarning>
-        <head>
+        {/* <head>
           <script
             crossOrigin="anonymous"
             src="//unpkg.com/react-scan/dist/auto.global.js"
           />
-        </head>
+        </head> */}
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
