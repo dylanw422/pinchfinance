@@ -75,6 +75,7 @@ export const plaidItem = pgTable("plaid_item", {
   lastUpdatedAt: timestamp("last_updated_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  outdated: boolean("outdated").default(false).notNull(),
 });
 
 export const plaidAccount = pgTable("plaid_account", {

@@ -133,8 +133,6 @@ export default function Dashboard() {
   const radialChartData = acctTxns ? calculateCategorySpend(monthTxns) : [];
   const averageExpense = averageExpensePerMonth();
 
-  console.log(acctTxns);
-
   return (
     <div className="flex h-full flex-col overflow-auto">
       <Greeting session={session} />

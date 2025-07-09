@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     });
 
     const ach = authRes.data.numbers.ach;
-    console.log("ACH Accounts:", JSON.stringify(ach));
+
     const achMap: any = new Map();
     ach.forEach((achAccount: any) => {
       achMap.set(achAccount.account_id, achAccount);

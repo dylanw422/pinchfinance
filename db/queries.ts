@@ -79,6 +79,7 @@ export const getUserData = async (user_id: string | undefined) => {
       id: plaidAccount.id,
       name: plaidAccount.name,
       plaidItemId: plaidItem.id,
+      outdated: plaidItem.outdated,
       type: plaidAccount.type,
       accountNumber: plaidAccount.accountNumber,
     })
@@ -228,14 +229,20 @@ export const getCursorForItem = async (id: string) => {
   return result[0]?.cursor ?? null;
 };
 
-export const updateTransactionCursor = async (
-  id: string,
-  cursor: string | null,
-) => {
+export const updateTransactionCursor = async (id: string, cursor: string | null) => {
   return await db
     .update(plaidCursor)
     .set({
       cursor,
     })
     .where(eq(plaidCursor.itemId, id));
+};
+
+export const setItemOutdated = async (id: string) => {
+  return await db
+    .update(plaidItem)
+    .set({
+      outdated: true,
+    })
+    .where(eq(plaidItem.id, id));
 };

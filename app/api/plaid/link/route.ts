@@ -15,6 +15,7 @@ export async function POST(req: Request) {
         client_user_id: user_id,
       },
       products: ["transactions", "auth", "liabilities", "investments"],
+      // access_token: accessToken, // Used to launch Link in update mode
       // redirect_uri: `${
       //   process.env.NODE_ENV === "development"
       //     ? "https://adb4-67-146-252-11.ngrok-free.app/dashboard"

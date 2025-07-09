@@ -11,11 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "inspector";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isLoading } = useSession();
   const { data: user } = useUser();
   const hasUpdated = useRef(false);
@@ -47,12 +43,8 @@ export default function DashboardLayout({
     }
   }, []);
 
-  if (isLoading && !user) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        Loading...
-      </div>
-    );
+  if (isLoading || !user) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
   return (
@@ -71,12 +63,14 @@ export default function DashboardLayout({
         <SidebarTrigger className="sticky top-0" />
         <div className="container flex flex-col">
           <Header user={user} />
-          {user?.data.plaidAccounts.length == 0 ? <ConnectBank /> : children}
+          {user?.data.plaidAccounts.length == 0 ||
+          user?.data.plaidAccounts.some((acct: any) => acct.outdated === true) ? (
+            <ConnectBank />
+          ) : (
+            children
+          )}
           {runData !== null && (
-            <RunTracker
-              runId={runData?.run.id}
-              accessToken={runData?.run.publicAccessToken}
-            />
+            <RunTracker runId={runData?.run.id} accessToken={runData?.run.publicAccessToken} />
           )}
           <Profile />
         </div>

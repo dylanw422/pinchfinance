@@ -3,6 +3,7 @@ import {
   getPlaidItems,
   insertPlaidBalance,
   insertPlaidTransaction,
+  setItemOutdated,
   updateTransactionCursor,
 } from "@/db/queries";
 import { logger, task, wait } from "@trigger.dev/sdk/v3";
@@ -25,14 +26,11 @@ export const syncTask = task({
 
         try {
           // === BALANCES ===
-          const plaidBalances = await axios.post(
-            `https://sandbox.plaid.com/accounts/balance/get`,
-            {
-              access_token: accessToken,
-              secret: process.env.PLAID_SANDBOX_KEY,
-              client_id: process.env.PLAID_CLIENT_ID,
-            },
-          );
+          const plaidBalances = await axios.post(`https://sandbox.plaid.com/accounts/balance/get`, {
+            access_token: accessToken,
+            secret: process.env.PLAID_SANDBOX_KEY,
+            client_id: process.env.PLAID_CLIENT_ID,
+          });
           const accounts = plaidBalances.data.accounts;
           await Promise.all(
             accounts.map(async (account: any) => {
@@ -103,8 +101,12 @@ export const syncTask = task({
           await updateTransactionCursor(item.id, cursor);
 
           success = true;
-        } catch (e) {
-          console.log(e);
+        } catch (err: any) {
+          console.error("Plaid API Error:", err.response?.data);
+          if (err.response?.data?.error_code === "ITEM_LOGIN_REQUIRED") {
+            setItemOutdated(item.id);
+            console.log("Item set to outdated");
+          }
         }
       }),
     );
