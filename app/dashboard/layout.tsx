@@ -10,10 +10,12 @@ import RunTracker from "@/components/run-tracker";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "inspector";
+import { useUpdateData } from "@/queries/update-data";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isLoading } = useSession();
   const { data: user } = useUser();
+  const syncData = useUpdateData();
   const hasUpdated = useRef(false);
 
   const [runData, setRunData] = useState<any>(null);
@@ -25,12 +27,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     const syncFn = async () => {
       try {
-        const res = await axios.post("/api/sync", {
-          userId: session?.data?.user.id,
-        });
-
-        if (res.data?.run) {
-          setRunData(res.data);
+        if (!session?.data?.user.id) {
+          throw new Error("User ID is missing");
+        }
+        const res = await syncData.mutateAsync({ userId: session.data.user.id });
+        if ("run" in res && res.run) {
+          setRunData(res);
         }
       } catch (error) {
         console.log(error);
@@ -63,8 +65,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <SidebarTrigger className="sticky top-0" />
         <div className="container flex flex-col">
           <Header user={user} />
-          {user?.plaidAccounts.length == 0 ||
-          user?.plaidAccounts.some((acct: any) => acct.outdated === true) ? (
+          {user.plaidAccounts.length == 0 ||
+          user.plaidAccounts.some((acct: any) => acct.outdated === true) ? (
             <ConnectBank />
           ) : (
             children

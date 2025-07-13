@@ -9,10 +9,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 
-import { trpc } from '@/lib/trpc';
-import { useCreateLinkToken, useExchangePublicToken } from '@/queries/plaid';
+import { trpc } from "@/lib/trpc";
+import { useCreateLinkToken, useExchangePublicToken } from "@/queries/plaid";
 
 export default function ConnectBank() {
+  const utils = trpc.useUtils();
   const queryClient = useQueryClient();
   const updateData = useUpdateData();
   const { data: session } = useSession();
@@ -43,11 +44,11 @@ export default function ConnectBank() {
         });
 
         updateData.mutate({ userId: session.data.user.id });
-        trpc.useUtils().user.getUserData.invalidate();
+        utils.user.getUserData.invalidate();
       }
     },
     onExit: (err, metadata) => {
-      console.log('Plaid Link exited');
+      console.log("Plaid Link exited");
     },
     token: token,
   };
@@ -64,8 +65,7 @@ export default function ConnectBank() {
           variant={"secondary"}
           className="font-bold"
         >
-          Connect with{" "}
-          <img src="/plaid_logo.svg" alt="plaid logo" className="h-6 pl-1" />
+          Connect with <img src="/plaid_logo.svg" alt="plaid logo" className="h-6 pl-1" />
         </Button>
       </div>
     </div>

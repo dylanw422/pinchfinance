@@ -4,7 +4,7 @@ import { plaidTransaction } from "./schema";
 import { db } from "./index";
 import { addDays } from "date-fns";
 
-const plaidAccountId = "9d5bcbe7-1441-4ee0-910a-7a33be4325ce";
+const plaidAccountId = "862c61c3-74c3-472b-98dd-c0db76a105bf";
 
 const companies = [
   "Walmart Store",
@@ -719,9 +719,7 @@ const financeCategories = [
 ];
 
 function getRandomDateWithinRange(start: any, end: any) {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-  );
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 
 const TOTAL_TRANSACTIONS = 200;
@@ -754,9 +752,7 @@ async function seedTransactions() {
 
   // --- 1. Generate INCOME_WAGES transactions ---
   const wageTransactions = [];
-  const incomeWagesCategory = financeCategories.find(
-    (c) => c.detailed === "INCOME_WAGES",
-  );
+  const incomeWagesCategory = financeCategories.find((c) => c.detailed === "INCOME_WAGES");
   if (!incomeWagesCategory) {
     console.error(
       "Error: INCOME_WAGES category not found in financeCategories. Cannot generate wages.",
@@ -808,19 +804,13 @@ async function seedTransactions() {
 
   // --- 2. Generate other transactions ---
   const otherTransactions = [];
-  const numOtherTransactionsToGenerate =
-    TOTAL_TRANSACTIONS - wageTransactions.length;
-  const nonWageCategories = financeCategories.filter(
-    (c) => c.detailed !== "INCOME_WAGES",
-  );
+  const numOtherTransactionsToGenerate = TOTAL_TRANSACTIONS - wageTransactions.length;
+  const nonWageCategories = financeCategories.filter((c) => c.detailed !== "INCOME_WAGES");
 
   if (numOtherTransactionsToGenerate > 0 && nonWageCategories.length > 0) {
     for (let i = 0; i < numOtherTransactionsToGenerate; i++) {
       const category = faker.helpers.arrayElement(nonWageCategories);
-      const transactionDateObject = getRandomDateWithinRange(
-        overallStartDate,
-        overallEndDate,
-      );
+      const transactionDateObject = getRandomDateWithinRange(overallStartDate, overallEndDate);
 
       let amountValue;
       if (category.primary === "LOAN_PAYMENTS") {
@@ -828,29 +818,18 @@ async function seedTransactions() {
           amountValue = fixedLoanPaymentAmounts.get(category.detailed);
         } else {
           amountValue =
-            Math.random() * (MAX_LOAN_PAYMENT_ABS - MIN_LOAN_PAYMENT_ABS) +
-            MIN_LOAN_PAYMENT_ABS;
-          fixedLoanPaymentAmounts.set(
-            category.detailed,
-            parseFloat(amountValue.toFixed(2)),
-          );
+            Math.random() * (MAX_LOAN_PAYMENT_ABS - MIN_LOAN_PAYMENT_ABS) + MIN_LOAN_PAYMENT_ABS;
+          fixedLoanPaymentAmounts.set(category.detailed, parseFloat(amountValue.toFixed(2)));
         }
       } else if (category.primary === "INCOME") {
         // Should only be non-wage income here
-        amountValue = -(
-          Math.random() * (MAX_INCOME_ABS - MIN_INCOME_ABS) +
-          MIN_INCOME_ABS
-        );
+        amountValue = -(Math.random() * (MAX_INCOME_ABS - MIN_INCOME_ABS) + MIN_INCOME_ABS);
       } else {
         amountValue =
-          Math.random() * (MAX_GENERAL_AMOUNT - MIN_GENERAL_AMOUNT) +
-          MIN_GENERAL_AMOUNT;
+          Math.random() * (MAX_GENERAL_AMOUNT - MIN_GENERAL_AMOUNT) + MIN_GENERAL_AMOUNT;
       }
       // Ensure correct precision for freshly generated amounts
-      if (
-        category.primary !== "LOAN_PAYMENTS" ||
-        !fixedLoanPaymentAmounts.has(category.detailed)
-      ) {
+      if (category.primary !== "LOAN_PAYMENTS" || !fixedLoanPaymentAmounts.has(category.detailed)) {
         amountValue = parseFloat(amountValue.toFixed(2));
       }
 
@@ -869,11 +848,7 @@ async function seedTransactions() {
         amount: amountValue.toString(),
         isoCurrencyCode: "USD",
         unofficialCurrencyCode: null,
-        paymentChannel: faker.helpers.arrayElement([
-          "in store",
-          "online",
-          "other",
-        ]),
+        paymentChannel: faker.helpers.arrayElement(["in store", "online", "other"]),
         pending: false,
         pendingTransactionId: null,
         authorizedDate: transactionDateObject,
@@ -896,9 +871,7 @@ async function seedTransactions() {
 
   // --- 3. Combine, sort, and ensure total count ---
   let allTransactions = [...wageTransactions, ...otherTransactions];
-  allTransactions.sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-  );
+  allTransactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   // If, due to the way wage transactions fall, we slightly exceed 200, trim it.
   // Or, if we have too few (e.g. wage period is very short), this logic won't add more.
@@ -917,9 +890,7 @@ async function seedTransactions() {
   const generatedWageTransactions = finalTransactions
     .filter((t) => t.personalFinanceCategoryDetailed === "INCOME_WAGES")
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  console.log(
-    `Generated INCOME_WAGES transactions: ${generatedWageTransactions.length}`,
-  );
+  console.log(`Generated INCOME_WAGES transactions: ${generatedWageTransactions.length}`);
 
   if (generatedWageTransactions.length > 0) {
     console.log(`  Verifying INCOME_WAGES dates (should be ~14 days apart):`);
@@ -930,8 +901,7 @@ async function seedTransactions() {
       if (i > 0) {
         const prevTx = generatedWageTransactions[i - 1];
         const dateDiff =
-          (new Date(currentTx.date).getTime() -
-            new Date(prevTx.date).getTime()) /
+          (new Date(currentTx.date).getTime() - new Date(prevTx.date).getTime()) /
           (1000 * 60 * 60 * 24);
         if (Math.abs(dateDiff - 14) > 0.5) {
           // Allow minor floating point issues
@@ -944,9 +914,7 @@ async function seedTransactions() {
         }
       }
     }
-    console.log(
-      `  All INCOME_WAGES dates verified as ~14 days apart: ${allTwoWeeksApart}`,
-    );
+    console.log(`  All INCOME_WAGES dates verified as ~14 days apart: ${allTwoWeeksApart}`);
     const allSameWageAmount = generatedWageTransactions.every(
       (t) => parseFloat(t.amount) === THE_FIXED_WAGE_AMOUNT,
     );
@@ -954,9 +922,7 @@ async function seedTransactions() {
       (t) => t.merchantName === THE_FIXED_EMPLOYER_DETAILS.name,
     );
     console.log(`  All INCOME_WAGES have fixed amount: ${allSameWageAmount}`);
-    console.log(
-      `  All INCOME_WAGES have fixed merchant: ${allSameWageMerchant}`,
-    );
+    console.log(`  All INCOME_WAGES have fixed merchant: ${allSameWageMerchant}`);
   }
   console.log("---------------------\n");
 

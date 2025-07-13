@@ -15,17 +15,17 @@ export default function Dashboard() {
   const { data: user } = useUser();
   const { selectedAccountId } = useSelectedAccount();
 
-  const selectedAccount = user?.data.plaidAccounts.find(
+  const selectedAccount = user?.plaidAccounts.find(
     (account: any) => account.id === selectedAccountId,
   );
   // Get the current balance for the selected account
-  const accountBalance = user?.data.plaidBalances.find(
+  const accountBalance = user?.plaidBalances.find(
     (balance: any) => balance.plaidAccountId === selectedAccountId,
   );
   const currentBalance = accountBalance?.current ?? null;
 
   // All transactions for the selected account
-  const acctTxns = user?.data.plaidTransactions?.filter(
+  const acctTxns = user?.plaidTransactions?.filter(
     (transaction: any) => transaction.plaidAccountId === selectedAccountId,
   );
 
@@ -46,37 +46,19 @@ export default function Dashboard() {
   // Calculate monthly income and expense
   const monthIncome = monthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
   const monthIncomeTotal =
-    Math.abs(
-      monthIncome.reduce(
-        (acc: number, curr: any) => acc + Number(curr.amount),
-        0,
-      ),
-    ) ?? 0;
+    Math.abs(monthIncome.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0)) ?? 0;
 
   const monthExpense = monthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
   const monthExpenseTotal =
-    monthExpense.reduce(
-      (acc: number, curr: any) => acc + Number(curr.amount),
-      0,
-    ) ?? 0;
+    monthExpense.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
 
-  const prevMonthIncome =
-    prevMonthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
+  const prevMonthIncome = prevMonthTxns?.filter((txn: any) => txn.amount < 0) ?? [];
   const prevMonthIncomeTotal =
-    Math.abs(
-      prevMonthIncome.reduce(
-        (acc: number, curr: any) => acc + Number(curr.amount),
-        0,
-      ),
-    ) ?? 0;
+    Math.abs(prevMonthIncome.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0)) ?? 0;
 
-  const prevMonthExpense =
-    prevMonthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
+  const prevMonthExpense = prevMonthTxns?.filter((txn: any) => txn.amount > 0) ?? [];
   const prevMonthExpenseTotal =
-    prevMonthExpense.reduce(
-      (acc: number, curr: any) => acc + Number(curr.amount),
-      0,
-    ) ?? 0;
+    prevMonthExpense.reduce((acc: number, curr: any) => acc + Number(curr.amount), 0) ?? 0;
 
   // Sort transactions for radial chart data: spend per category
   const calculateCategorySpend = (txns: any[]) => {
@@ -86,9 +68,7 @@ export default function Dashboard() {
       const amount = Math.abs(parseFloat(txn.amount));
       // if (txn.personalFinanceCategoryPrimary === "INCOME") continue;
       const category =
-        rawAmount < 0
-          ? "INCOME"
-          : txn.personalFinanceCategoryPrimary || "UNCATEGORIZED";
+        rawAmount < 0 ? "INCOME" : txn.personalFinanceCategoryPrimary || "UNCATEGORIZED";
 
       if (!isNaN(amount)) {
         categoryMap[category] = (categoryMap[category] || 0) + amount;
@@ -111,26 +91,20 @@ export default function Dashboard() {
     const monthlyTotals: Record<string, number> = {};
 
     for (const txn of acctTxns) {
-      if (txn.amount > 0) {
+      if (Number(txn.amount) > 0) {
         const date = new Date(txn.date);
         const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
-        monthlyTotals[monthKey] =
-          (monthlyTotals[monthKey] || 0) + Number(txn.amount);
+        monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + Number(txn.amount);
       }
     }
 
     const totalMonths = Object.keys(monthlyTotals).length;
-    const totalExpense = Object.values(monthlyTotals).reduce(
-      (sum, val) => sum + val,
-      0,
-    );
+    const totalExpense = Object.values(monthlyTotals).reduce((sum, val) => sum + val, 0);
 
-    return totalMonths > 0
-      ? parseFloat((totalExpense / totalMonths).toFixed(2))
-      : 0;
+    return totalMonths > 0 ? parseFloat((totalExpense / totalMonths).toFixed(2)) : 0;
   };
 
-  const radialChartData = acctTxns ? calculateCategorySpend(monthTxns) : [];
+  const radialChartData = acctTxns ? calculateCategorySpend(monthTxns ?? []) : [];
   const averageExpense = averageExpensePerMonth();
 
   return (
@@ -141,9 +115,9 @@ export default function Dashboard() {
         className="grid w-full grid-cols-2 grid-rows-5 gap-4 py-4 md:grid-rows-4 lg:grid-cols-11 lg:grid-rows-3"
       >
         <Balance
-          accountType={selectedAccount?.type}
-          accountNumber={selectedAccount?.accountNumber}
-          balance={currentBalance}
+          accountType={selectedAccount?.type ?? ""}
+          accountNumber={selectedAccount?.accountNumber ?? null}
+          balance={currentBalance ?? ""}
           className="col-span-2 row-span-1 lg:col-span-5 xl:col-span-4"
         />
         <MIncome
@@ -165,7 +139,7 @@ export default function Dashboard() {
         <Statistics className="col-span-2 row-span-2 lg:col-span-7 lg:row-span-2 xl:col-span-8" />
         <More className="col-span-3 row-span-1" />
       </div>
-      <Transactions txns={acctTxns} />
+      <Transactions txns={acctTxns ?? []} />
     </div>
   );
 }
