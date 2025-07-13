@@ -1,27 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+
+import { trpc } from '@/lib/trpc';
 
 export const useUserCount = () => {
-  return useQuery({
-    queryKey: ["user-count"],
-    queryFn: async () => {
-      const res = await axios.get("/api/waitlist");
-      return res.data.count[0].count;
-    },
-  });
+  return trpc.waitlist.getCount.useQuery();
 };
 
 export const useAddUser = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (email: string) => {
-      const res = await axios.post("/api/waitlist", {
-        email,
-      });
-
-      return res;
+  const utils = trpc.useUtils();
+  return trpc.waitlist.addUser.useMutation({
+    onSettled: () => {
+      utils.waitlist.getCount.invalidate();
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ["user-count"] }),
   });
 };
+

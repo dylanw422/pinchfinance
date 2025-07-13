@@ -31,20 +31,16 @@ export const metadata: Metadata = {
   },
 };
 
+import TRPCProvider from '@/components/trpc-provider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
+    <TRPCProvider>
       <html lang="en" suppressHydrationWarning>
-        {/* <head>
-          <script
-            crossOrigin="anonymous"
-            src="//unpkg.com/react-scan/dist/auto.global.js"
-          />
-        </head> */}
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -61,6 +57,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </QueryProvider>
+    </TRPCProvider>
   );
 }

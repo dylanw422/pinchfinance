@@ -1,10 +1,10 @@
-import { authClient } from "@/lib/auth-client";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { trpc } from '@/lib/trpc';
+import { authClient } from '@/lib/auth-client';
+import { useQuery } from '@tanstack/react-query';
 
 export const useSession = () => {
   return useQuery({
-    queryKey: ["session"],
+    queryKey: ['session'],
     queryFn: async () => {
       return await authClient.getSession();
     },
@@ -12,10 +12,5 @@ export const useSession = () => {
 };
 
 export const useUser = () => {
-  return useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      return axios.get("/api/user");
-    },
-  });
+  return trpc.user.getUserData.useQuery();
 };

@@ -26,7 +26,8 @@ const avatars = [
 ];
 
 export default function ClientSection() {
-  const { data: userCount } = useUserCount();
+  const { data: userCountData } = useUserCount();
+  const userCount = userCountData ? userCountData[0]?.count : 0;
 
   return (
     <section
@@ -36,13 +37,15 @@ export default function ClientSection() {
       <div className="py-14">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
           <h2 className="text-center text-sm font-semibold">
-            JOIN {userCount} OTHER USERS ON OUR WAITLIST
+            {userCount > 0 && `JOIN ${userCount} OTHER USERS ON OUR WAITLIST`}
           </h2>
           <div className="mt-6 flex w-full justify-center">
-            <AvatarCircles
-              numPeople={userCount - 6}
-              avatarUrls={avatars.slice(0, userCount)}
-            />
+            {userCount > 0 && (
+              <AvatarCircles
+                numPeople={userCount - 6}
+                avatarUrls={avatars.slice(0, userCount)}
+              />
+            )}
           </div>
         </div>
       </div>

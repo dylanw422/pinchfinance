@@ -63,8 +63,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <SidebarTrigger className="sticky top-0" />
         <div className="container flex flex-col">
           <Header user={user} />
-          {user?.data.plaidAccounts.length == 0 ||
-          user?.data.plaidAccounts.some((acct: any) => acct.outdated === true) ? (
+          {user?.plaidAccounts.length == 0 ||
+          user?.plaidAccounts.some((acct: any) => acct.outdated === true) ? (
             <ConnectBank />
           ) : (
             children

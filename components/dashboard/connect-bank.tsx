@@ -9,40 +9,45 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 
+import { trpc } from '@/lib/trpc';
+import { useCreateLinkToken, useExchangePublicToken } from '@/queries/plaid';
+
 export default function ConnectBank() {
   const queryClient = useQueryClient();
   const updateData = useUpdateData();
   const { data: session } = useSession();
   const [token, setToken] = useState<string | null>(null);
+  const createLinkTokenMutation = useCreateLinkToken();
+  const exchangePublicTokenMutation = useExchangePublicToken();
 
   useEffect(() => {
     const createLinkToken = async () => {
-      const res = await axios.post("/api/plaid/link", {
-        user_id: session?.data?.user.id,
-      });
-      setToken(res.data);
+      if (session?.data?.user) {
+        const token = await createLinkTokenMutation.mutateAsync({
+          userId: session.data.user.id,
+        });
+        setToken(token);
+      }
     };
 
-    if (session?.data) {
-      createLinkToken();
-    }
+    createLinkToken();
   }, [session]);
 
   const config: PlaidLinkOptions = {
     onSuccess: async (public_token, metadata) => {
       if (session?.data?.user) {
-        await axios.post("/api/plaid/access-token", {
-          user_id: session.data.user.id,
-          public_token,
+        await exchangePublicTokenMutation.mutateAsync({
+          userId: session.data.user.id,
+          publicToken: public_token,
           metadata,
         });
 
-        updateData.mutate(session.data.user.id);
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        updateData.mutate({ userId: session.data.user.id });
+        trpc.useUtils().user.getUserData.invalidate();
       }
     },
     onExit: (err, metadata) => {
-      console.log("Plaid Link exited");
+      console.log('Plaid Link exited');
     },
     token: token,
   };

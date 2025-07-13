@@ -1,14 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+
+import { trpc } from '@/lib/trpc';
 
 export const useUpdateData = () => {
-  return useMutation({
-    mutationFn: async (userId: string) => {
-      const res = await axios.post("/api/sync", {
-        userId,
-      });
-
-      return res.data;
-    },
-  });
+  return trpc.sync.syncData.useMutation();
 };
+

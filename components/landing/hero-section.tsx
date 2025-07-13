@@ -16,7 +16,7 @@ export default function HeroSection() {
   const submitForm = async () => {
     if (email.length > 6 && email.includes("@")) {
       try {
-        const res = await addUser.mutateAsync(email);
+        const res = await addUser.mutateAsync({ email });
 
         if (res.status === 200) {
           setEmail("");
